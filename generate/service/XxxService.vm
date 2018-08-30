@@ -62,40 +62,6 @@ public class ${entityClass}Service {
 				#end
 				#end 
 
-
-/*					
-          		  dto.setStateName(getString(obj[0]));
-          		  dto.setDistrictName(getString(obj[1]));
-          		  dto.setFacilityName(getString(obj[2]));
-          		  dto.setOpdAttendance(getLong(obj[3]));
-          		  dto.setAge0(getLong(obj[4]));
-          		  dto.setAge1(getLong(obj[5]));//D
-          		  dto.setAge2(getLong(obj[6]));
-          		  dto.setAge3(getLong(obj[7]));//D
-          		  dto.setAge4(getLong(obj[8]));
-          		  dto.setAge5(getLong(obj[9]));//D
-          		  dto.setAge6(getLong(obj[10]));
-          		  dto.setAge7(getLong(obj[11]));//D
-          		  dto.setAge8(getLong(obj[12]));
-          		  dto.setAge9(getLong(obj[13]));//D
-          		  dto.setAge10(getLong(obj[14]));
-          		  dto.setAge11(getLong(obj[15]));//D
-          		  
-          		//------OP = OP + Death
-          		dto.setAge0(addValues(dto.getAge0(), dto.getAge1()));
-          		dto.setAge2(addValues(dto.getAge2(), dto.getAge3()));
-          		dto.setAge4(addValues(dto.getAge4(), dto.getAge5()));
-          		dto.setAge6(addValues(dto.getAge6(), dto.getAge7()));
-          		dto.setAge8(addValues(dto.getAge8(), dto.getAge9()));
-          		dto.setAge10(addValues(dto.getAge10(), dto.getAge11()));
-          		  
-          		  Long totalOpd= addValues(dto.getAge0(), dto.getAge2(), dto.getAge4(), 
-          		      dto.getAge6(), dto.getAge8(), dto.getAge10());
-          		  Long totalD= addValues(dto.getAge1(), dto.getAge3(), dto.getAge5(),
-          		      dto.getAge7(), dto.getAge9(), dto.getAge11());
-          		  dto.setTotalD(totalD);
-          		  dto.setTotalOpd(totalOpd);
-  */        		  	
           		  dtoList.add(dto);
         		}
 		}

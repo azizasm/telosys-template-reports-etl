@@ -133,21 +133,11 @@ public class ${entityClass}EtlService implements DataETL {
 				#end
 				#end 			
 				/*		
-	      	nhph.setStateName(getString(obj[0]));
-	      	nhph.setDistrictName(getString(obj[1]));
-	      	nhph.setFacilityName(getString(obj[2]));
-	      	nhph.setStateId(getLong(obj[3]));
-	      	nhph.setDistrictId(getLong(obj[4]));
-	      	nhph.setPatientId(getLong(obj[5])); 
-	      	nhph.setDiagnoseCode(getString(obj[6]));//count diagnosisCode as OPD attendance
-	      	nhph.setDiagnoseDate(getDate(obj[7]));
-	      	nhph.setEpisodeDiagnosisId(getLong(obj[8]));    	
-	      	
+
 	      	createdAt= getTimestamp(obj[9]);
 	      	updatedAt= getTimestamp(obj[10]);
-	      	nhph.setBirthDate(getDate(obj[11]));
-	      	nhph.setDeathDate(getDate(obj[12]));
-	      	nhph.setFacilityId(getLong(obj[13]));
+
+
 					*/
 	      	${entityInstance}Repository.save(nhph);
 		    
