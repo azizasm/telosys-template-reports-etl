@@ -1,8 +1,5 @@
 ## Include
 #parse("include/var_entity.vm")
-
-
-
 /**
 * Copyright  2015 MIMOS Berhad. All Rights Reserved 
 *
@@ -13,10 +10,10 @@
 *   
 * Class name: com.mimos.tpcohcis.report.tpchims.PERSSRA201.generate.model
 * Description: 
-* <TODO: What the class does>
+* 
 * 
 */
-
+// Zys Code from  E:\EXP-proj\telosys-template-reports-etl ; C:\Users\aziz.smansoor\eclipse-workspace\JvProj\TelosysTools\templates\telosys-template-reports-etl 
 
 package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model;
 /*
