@@ -1,0 +1,73 @@
+/**
+* Copyright � 2016 MIMOS Berhad. All Rights Reserved 
+*
+* All intellectual properties not limited to patents, trademarks, industrial designs,
+* copyrights, know-how including layout of images and contents contained herein 
+* belong to MIMOS Berhad. Any reproduction, modification, distribution 
+* or republishing materials without prior written consent is prohibited.
+*   
+* Class name: my.mimos.tpcohcis.report.dental.pg101.repository.PG101Repository
+* Description: 
+* <TODO: What the class does>
+* 
+*/
+
+package my.mimos.tpcohcis.report.nontpchims.nhph012.generate.repository;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.model.Nhph012;
+
+public interface Nhph012Repository extends JpaRepository<Nhph012, Long> {
+
+	@Query(value="with patient_det as (select distinct a.patient_id, a.state_name, a.district_name, a.facility_name,"
+		+ " (case when length(a.diagnose_code)>0 then 1 else 0 end ) as k1,"
+		+ " age_0,age_1,age_2,age_3,age_4,age_5,age_6,age_7,age_8,age_9,age_10,age_11"
+		+ " from report.rpt_nontpchims_nhph012 a"
+		+ " where a.diagnose_date between ?1 and ?2"
+		+ " and a.facility_id = ?3 )"
+		+ " select state_name, district_name, facility_name, sum( k1 ) as k1,"
+		+ " sum(age_0) as k2, sum(age_1) as k3, sum(age_2) as k4,"
+		+ " sum(age_3) as k5, sum(age_4) as k6, sum(age_5) as k7,"
+		+ " sum(age_6) as k8, sum(age_7) as k9, sum(age_8) as k10,"
+		+ " sum(age_9) as k11, sum(age_10) as k12, sum(age_11) as k13 from patient_det"
+		+ " group by facility_name, district_name,state_name", nativeQuery=true)
+	List<Object[]> findByYearAndMonthAndClinic(Timestamp from, Timestamp to, Long facilityId);
+
+	@Query(value="with patient_det as (select distinct a.patient_id, a.state_name, a.district_name, a.facility_name,"
+		+ " (case when length(a.diagnose_code)>0 then 1 else 0 end ) as k1,"
+		+ " age_0,age_1,age_2,age_3,age_4,age_5,age_6,age_7,age_8,age_9,age_10,age_11"
+		+ " from report.rpt_nontpchims_nhph012 a"
+		+ " where a.diagnose_date between ?1 and ?2"
+		+ " and a.district_id= ?3 "
+	    + " and a.state_id= ?4 "
+		+ " )"
+		+ " select state_name, district_name, facility_name, sum( k1 ) as k1,"
+		+ " sum(age_0) as k2, sum(age_1) as k3, sum(age_2) as k4,"
+		+ " sum(age_3) as k5, sum(age_4) as k6, sum(age_5) as k7,"
+		+ " sum(age_6) as k8, sum(age_7) as k9, sum(age_8) as k10,"
+		+ " sum(age_9) as k11, sum(age_10) as k12, sum(age_11) as k13 from patient_det"
+		+ " group by facility_name, district_name,state_name", nativeQuery=true)
+	List<Object[]> findByYearAndMonthAndDistrict(Timestamp from, Timestamp to,Long district ,Long state);
+
+	@Query(value="with patient_det as (select distinct a.patient_id, a.state_name, a.district_name, a.facility_name,"
+		+ " (case when length(a.diagnose_code)>0 then 1 else 0 end ) as k1,"
+		+ " age_0,age_1,age_2,age_3,age_4,age_5,age_6,age_7,age_8,age_9,age_10,age_11"
+		+ " from report.rpt_nontpchims_nhph012 a"
+		+ " where a.diagnose_date between ?1 and ?2"
+	    + " and a.state_id= ?3 "
+		+ " )"
+		+ " select state_name, district_name, facility_name, sum( k1 ) as k1,"
+		+ " sum(age_0) as k2, sum(age_1) as k3, sum(age_2) as k4,"
+		+ " sum(age_3) as k5, sum(age_4) as k6, sum(age_5) as k7,"
+		+ " sum(age_6) as k8, sum(age_7) as k9, sum(age_8) as k10,"
+		+ " sum(age_9) as k11, sum(age_10) as k12, sum(age_11) as k13 from patient_det"
+		+ " group by facility_name, district_name,state_name", nativeQuery=true)
+	List<Object[]> findByYearAndMonthAndState(@Param("from") Timestamp from, @Param("to") Timestamp to ,@Param("state") Long state);
+
+}

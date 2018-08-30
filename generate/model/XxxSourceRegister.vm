@@ -1,0 +1,55 @@
+/**
+* Copyright © 2016 MIMOS Berhad. All Rights Reserved 
+*
+* All intellectual properties not limited to patents, trademarks, industrial designs,
+* copyrights, know-how including layout of images and contents contained herein 
+* belong to MIMOS Berhad. Any reproduction, modification, distribution 
+* or republishing materials without prior written consent is prohibited.
+*   
+* Class name: my.mimos.tpcohcis.report.ohcis.pg101.etl.model.PG101SourceRegister
+* Description: 
+* <TODO: What the class does>
+* 
+*/
+
+package my.mimos.tpcohcis.report.nontpchims.nhph012.generate.model;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import my.mimos.tpcohcis.report.shared.model.AbstractReportEntity;
+
+
+@Entity
+@Table(name = "rpt_nontpchims_nhph012_src_registry", schema = "report")
+public class Nhph012SourceRegister extends AbstractReportEntity implements Serializable {
+    
+    	@Id
+	@Column(name = "EPISODE_DIAGNOSIS_ID")
+	private Long episodeDiagnosisId;
+			
+	@Column(name = "UPDATED_AT")
+	protected Timestamp updatedAt;
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public Long getEpisodeDiagnosisId() {
+	  return episodeDiagnosisId;
+	}
+
+	public void setEpisodeDiagnosisId(Long episodeDiagnosisId) {
+	  this.episodeDiagnosisId = episodeDiagnosisId;
+	}
+
+}

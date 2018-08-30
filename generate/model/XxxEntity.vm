@@ -1,0 +1,141 @@
+## Include
+#parse("include/var_entity.vm")
+## Use macro resolve header
+
+
+/**
+* Copyright  2015 MIMOS Berhad. All Rights Reserved 
+*
+* All intellectual properties not limited to patents, trademarks, industrial designs,
+* copyrights, know-how including layout of images and contents contained herein 
+* belong to MIMOS Berhad. Any reproduction, modification, distribution 
+* or republishing materials without prior written consent is prohibited.
+*   
+* Class name: com.mimos.tpcohcis.report.tpchims.PERSSRA201.generate.model
+* Description: 
+* <TODO: What the class does>
+* 
+*/
+
+#package($SRC)
+/*
+## Use macro resolve imports
+#imports($entity.attributes true)
+*/
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import my.mimos.tpcohcis.report.shared.model.AbstractReportEntity;
+
+@Entity
+@Table(name = "rpt_nontpchims_${BEANNAME_LC}", schema = "report")
+public class $entityClass extends AbstractReportEntity implements Serializable {
+
+
+#if($compositeKey)
+    //----------------------------------------------------------------------
+    // ENTITY PRIMARY KEY ( EMBEDDED IN AN EXTERNAL CLASS )  
+    //----------------------------------------------------------------------
+	@EmbeddedId
+    private ${entityKeyClass} compositePrimaryKey ;
+#else 
+    //----------------------------------------------------------------------
+    // ENTITY PRIMARY KEY ( BASED ON A SINGLE FIELD )
+    //----------------------------------------------------------------------
+#foreach($field in $entity.keyAttributes)
+$jpa.fieldAnnotations(4, $field)
+    private $field.type $field.name #if($field.hasInitialValue())= ${field.initialValue} #end; #if($field.isFK())// Foreign Key #end 
+#end
+#end
+
+    //----------------------------------------------------------------------
+    // ENTITY DATA FIELDS 
+    //----------------------------------------------------------------------    
+#foreach($field in $entity.nonKeyAttributes)
+$jpa.fieldAnnotations(4, $field)
+    private $field.type $field.name #if($field.hasInitialValue())= ${field.initialValue} #end; #if($field.isFK())// Foreign Key #end 
+#end
+
+
+    //----------------------------------------------------------------------
+    // CONSTRUCTOR(S)
+    //----------------------------------------------------------------------
+    public $entityClass() {
+		super();
+#if($compositeKey)        
+		this.compositePrimaryKey = new ${entityKeyClass}();       
+#end
+    }
+
+    //----------------------------------------------------------------------
+    // GETTER & SETTER FOR THE KEY FIELD
+    //----------------------------------------------------------------------
+#foreach($field in $entity.keyAttributes)
+#if ($field.setter)    
+	public void ${field.setter}($field.type $field.name) {
+#if($compositeKey)  
+        this.compositePrimaryKey.${field.setter}($field.name) ;
+#else
+        this.$field.name = $field.name ;
+#end
+    }
+#end
+#if($field.getter)    
+	public $field.type ${field.getter}() {
+#if($compositeKey)  
+        return this.compositePrimaryKey.${field.getter}() ;
+#else
+        return this.$field.name;
+#end
+    }
+#end
+#end
+
+    //----------------------------------------------------------------------
+    // GETTERS & SETTERS FOR FIELDS
+    //----------------------------------------------------------------------
+#foreach($field in $entity.nonKeyAttributes)
+#if ($field.databaseName)    
+	//--- DATABASE MAPPING : $field.databaseName ($field.databaseType) 
+#end
+#if ($field.setter)    
+	public void ${field.setter}($field.type $field.name) {this.$field.name = $field.name;}
+#end
+#if ($field.getter)    
+	public $field.type ${field.getter}() {return this.$field.name;}
+#end
+
+#end 
+
+    //----------------------------------------------------------------------
+    // toString METHOD
+    //----------------------------------------------------------------------
+ 	public String toString() {
+		StringBuilder sb = new StringBuilder(); 
+#if($compositeKey)
+		sb.append("[" + compositePrimaryKey + "]"); 
+#else
+#foreach( $field in $entity.keyAttributes )
+#if( $foreach.count  > 1 )
+		sb.append("|"); 
+#end
+		sb.append($field.name); 
+#end 
+#end
+#foreach( $field in $entity.nonKeyAttributes )
+#if( $foreach.count  > 1 )
+		sb.append("|"); 
+#end
+		sb.append($field.name); 
+#end
+        return sb.toString();
+    }
+
+	
+}

@@ -1,0 +1,128 @@
+/**
+* Copyright � 2016 MIMOS Berhad. All Rights Reserved 
+*
+* All intellectual properties not limited to patents, trademarks, industrial designs,
+* copyrights, know-how including layout of images and contents contained herein 
+* belong to MIMOS Berhad. Any reproduction, modification, distribution 
+* or republishing materials without prior written consent is prohibited.
+*   * 
+*/
+
+package my.mimos.tpcohcis.report.nontpchims.nhph012.generate.controller;
+
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import my.mimos.tpcohcis.module.admin.facility.model.FacilityAddress;
+import my.mimos.tpcohcis.module.admin.facility.model.HealthFacility;
+import my.mimos.tpcohcis.module.admin.facility.repository.HealthFacilityRepository;
+import my.mimos.tpcohcis.module.cd.report.dto.ReportRequestDTO;
+import my.mimos.tpcohcis.module.cd.shared.FileGeneratorUtil;
+import my.mimos.tpcohcis.report.nontpchims.nhph012.etl.service.Nhph012EtlService;
+import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.dto.Nhph012Dto;
+import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.service.Nhph012Service;
+import my.mimos.tpcohcis.report.shared.util.ReportCommonHeaderUtil;
+import my.mimos.tpcohcis.report.shared.util.ReportConstants;
+import my.mimos.tpcohcis.shared.exception.ApplicationException;
+import my.mimos.tpcohcis.shared.exception.ErrorCode;
+import my.mimos.tpcohcis.shared.model.District;
+import my.mimos.tpcohcis.shared.repository.DistrictRepository;
+import my.mimos.tpcohcis.shared.repository.StateRepository;
+
+@RestController
+@RequestMapping("/report/nontpchims")
+public class Nhph012Controller {
+
+	@Autowired
+	private FileGeneratorUtil generatorUtil;
+
+	@Autowired
+	private Nhph012Service nhph012Service;
+	@Autowired
+	private Nhph012EtlService nhph012EtlService;
+	
+	@Autowired
+	ReportCommonHeaderUtil reportCommonHeaderUtil;
+		
+	@RequestMapping(value = "NHPH012", method = RequestMethod.GET)
+	public void viewNbos10Report(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+	        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to, @RequestParam(required = false) Integer month,
+	        @RequestParam(required = false) Integer year, 
+	        @RequestParam(required = false) Integer clinic, 
+	        @RequestParam(required = false) Integer district,
+	        @RequestParam(required = false) Integer state, 
+	        @RequestParam String format,
+	        HttpServletResponse response) {
+
+		String jasperTemplate = ReportConstants.NONTPCHIMS_REPORT_TEMPLATES_PATH + "tpc_nh_ph_012.jrxml";
+
+		System.out.println("jasperTemplate filename = " + jasperTemplate);
+
+		if (month != null && year != null) {
+			LocalDate start = LocalDate.of(year, month, 1);
+			LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+			from = LocalDateTime.of(start, LocalTime.MIN);
+			to = LocalDateTime.of(end, LocalTime.MAX);
+		}
+		if (from != null && to != null) {
+			from = from;
+			to = to;
+			month= from.getMonthValue();
+			year= from.getYear();
+		}
+
+		List<Nhph012Dto> jasperList = new ArrayList<Nhph012Dto>();
+		
+		try {
+		  	Timestamp tsFrom = Timestamp.valueOf(from);
+		  	Timestamp tsTo = Timestamp.valueOf(to);
+		  	List<Nhph012Dto> dtoList = nhph012Service.getDataReportDetails(tsFrom, tsTo , clinic, district, state );
+			
+			jasperList.addAll(dtoList);
+			Map<String, Object> parameters = reportCommonHeaderUtil.getHeaderParametersForTPCHIMSCustomMonth(from, to, clinic, district, state, 1);	
+			
+			String filename="NHPH012";
+			if (format.equals(ReportConstants.EXPORT_FORMAT_PDF)) {
+			  //
+			} else if (format.equals(ReportConstants.EXPORT_FORMAT_EXCEL)) {
+				parameters.put("IS_IGNORE_PAGINATION", true);
+				
+			} else if (format.equals(ReportConstants.EXPORT_FORMAT_DOCX)) {
+			  //
+			}
+			ReportRequestDTO< Nhph012Dto > requestDTO = new ReportRequestDTO< Nhph012Dto >(response, jasperTemplate, filename, jasperList, parameters);
+			generatorUtil.generateReport(requestDTO, format);
+			
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorCode.UNEXPECTED_EXCEPTION);
+		}
+
+	}
+		
+	@RequestMapping(value = "NHPH012/etl", method = RequestMethod.GET)
+	public void doETL(@RequestParam(required = true) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime fromDate,
+	        @RequestParam(required = true) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime toDate,
+	        HttpServletResponse response) {
+					
+	  nhph012EtlService.doETL(fromDate, toDate);
+	}
+}

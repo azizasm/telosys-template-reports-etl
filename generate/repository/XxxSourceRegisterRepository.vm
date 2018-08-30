@@ -1,0 +1,9 @@
+package my.mimos.tpcohcis.report.nontpchims.nhph012.generate.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.model.Nhph012SourceRegister;
+
+public interface Nhph012SourceRegisterRepository extends JpaRepository<Nhph012SourceRegister, Long> {
+       
+}
