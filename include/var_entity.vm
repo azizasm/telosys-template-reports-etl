@@ -4,6 +4,7 @@
 ## Declare some variable based on $entity
 #set($tableName    						= ${entity.databaseTable})
 #set($entityClass    					= ${entity.name})
+#set($entityCaps    					= ${entity.name.toUpperCase()})
 #set($entityInstance    				= $fn.uncapitalize(${entityClass}))
 #set($entityKeyClass    				= "${entity.name}Key")
 #set($entityKeyInstance    				= $fn.uncapitalize(${entityKeyClass}))
