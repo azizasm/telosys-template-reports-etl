@@ -124,6 +124,13 @@ public class ${entityClass}EtlService implements DataETL {
 	  Timestamp updatedAt= null;
 	  for (Object[] obj : listResult) {
 	      	${entityClass} nhph= new ${entityClass}();
+
+				#foreach($field in $entity.nonKeyAttributes)
+				#if ($field.setter)    
+					nhph.${field.setter}(get${field.type}(obj[${velocityCount}]));
+				#end
+				#end 			
+				/*		
 	      	nhph.setStateName(getString(obj[0]));
 	      	nhph.setDistrictName(getString(obj[1]));
 	      	nhph.setFacilityName(getString(obj[2]));
@@ -139,6 +146,7 @@ public class ${entityClass}EtlService implements DataETL {
 	      	nhph.setBirthDate(getDate(obj[11]));
 	      	nhph.setDeathDate(getDate(obj[12]));
 	      	nhph.setFacilityId(getLong(obj[13]));
+					*/
 	      	${entityInstance}Repository.save(nhph);
 		    
 		${entityClass}SourceRegister nhph003SourceRegistr = ${entityInstance}SourceRegisterRepo.findOne(nhph.getEpisodeDiagnosisId());

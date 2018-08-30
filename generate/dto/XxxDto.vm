@@ -23,22 +23,11 @@ import javax.persistence.Id;
 
 public class ${entityClass}Dto {
 
-	private String stateName;
-	private String districtName;
-	private String facilityName;
-	private Long opdAttendance;
-	private Long age0;
-	private Long age1;
-	private Long age2;
-	private Long age3;
-	private Long age4;
-	private Long age5;
-	private Long age6;
-	private Long age7;
-	private Long age8;
-	private Long age9;
-	private Long age10;
-	private Long age11;
+
+#foreach($field in $entity.nonKeyAttributes)
+    private $field.type $field.name ; 
+#end
+
 	
 	private Long totalOpd;
 	private Long totalD;
@@ -47,133 +36,18 @@ public class ${entityClass}Dto {
 
 	}
 
-	public String getStateName() {
-	  return stateName;
-	}
+#foreach($field in $entity.nonKeyAttributes)
+#if ($field.databaseName)    
+	//--- DATABASE MAPPING : $field.databaseName ($field.databaseType) 
+#end
+#if ($field.setter)    
+	public void ${field.setter}($field.type $field.name) {this.$field.name = $field.name;}
+#end
+#if ($field.getter)    
+	public $field.type ${field.getter}() {return this.$field.name;}
+#end
 
-	public void setStateName(String stateName) {
-	  this.stateName = stateName;
-	}
-
-	public String getDistrictName() {
-	  return districtName;
-	}
-
-	public void setDistrictName(String districtName) {
-	  this.districtName = districtName;
-	}
-
-	public String getFacilityName() {
-	  return facilityName;
-	}
-
-	public void setFacilityName(String facilityName) {
-	  this.facilityName = facilityName;
-	}
-
-	public Long getOpdAttendance() {
-	  return opdAttendance;
-	}
-
-	public void setOpdAttendance(Long opdAttendance) {
-	  this.opdAttendance = opdAttendance;
-	}
-
-	public Long getAge0() {
-	  return age0;
-	}
-
-	public void setAge0(Long age0) {
-	  this.age0 = age0;
-	}
-
-	public Long getAge1() {
-	  return age1;
-	}
-
-	public void setAge1(Long age1) {
-	  this.age1 = age1;
-	}
-
-	public Long getAge2() {
-	  return age2;
-	}
-
-	public void setAge2(Long age2) {
-	  this.age2 = age2;
-	}
-
-	public Long getAge3() {
-	  return age3;
-	}
-
-	public void setAge3(Long age3) {
-	  this.age3 = age3;
-	}
-
-	public Long getAge4() {
-	  return age4;
-	}
-
-	public void setAge4(Long age4) {
-	  this.age4 = age4;
-	}
-
-	public Long getAge5() {
-	  return age5;
-	}
-
-	public void setAge5(Long age5) {
-	  this.age5 = age5;
-	}
-
-	public Long getAge6() {
-	  return age6;
-	}
-
-	public void setAge6(Long age6) {
-	  this.age6 = age6;
-	}
-
-	public Long getAge7() {
-	  return age7;
-	}
-
-	public void setAge7(Long age7) {
-	  this.age7 = age7;
-	}
-
-	public Long getAge8() {
-	  return age8;
-	}
-
-	public void setAge8(Long age8) {
-	  this.age8 = age8;
-	}
-
-	public Long getAge9() {
-	  return age9;
-	}
-
-	public void setAge9(Long age9) {
-	  this.age9 = age9;
-	}
-
-	public Long getAge10() {
-	  return age10;
-	}
-
-	public void setAge10(Long age10) {
-	  this.age10 = age10;
-	}
-
-	public Long getAge11() {
-	  return age11;
-	}
-
-	public void setAge11(Long age11) {
-	  this.age11 = age11;
-	}
+#end 
 
 	public Long getTotalOpd() {
 	  return totalOpd;

@@ -55,6 +55,15 @@ public class ${entityClass}Service {
 		if(null != ${entityInstance}DtoLists && !${entityInstance}DtoLists.isEmpty()){
           		for (Object[] obj : ${entityInstance}DtoLists) {
           		  ${entityClass}Dto dto = new ${entityClass}Dto();
+
+				#foreach($field in $entity.nonKeyAttributes)
+				#if ($field.setter)    
+					dto.${field.setter}(get${field.type}(obj[${velocityCount}]));
+				#end
+				#end 
+
+
+/*					
           		  dto.setStateName(getString(obj[0]));
           		  dto.setDistrictName(getString(obj[1]));
           		  dto.setFacilityName(getString(obj[2]));
@@ -86,7 +95,7 @@ public class ${entityClass}Service {
           		      dto.getAge7(), dto.getAge9(), dto.getAge11());
           		  dto.setTotalD(totalD);
           		  dto.setTotalOpd(totalOpd);
-          		  	
+  */        		  	
           		  dtoList.add(dto);
         		}
 		}
