@@ -34,7 +34,7 @@ import javax.persistence.Table;
 import my.mimos.tpcohcis.report.shared.model.AbstractReportEntity;
 
 @Entity
-@Table(name = "rpt_nontpchims_${BEANNAME_LC}", schema = "report")
+@Table(name = "rpt_nontpchims_${entityInstance}", schema = "report")
 public class $entityClass extends AbstractReportEntity implements Serializable {
 
 
