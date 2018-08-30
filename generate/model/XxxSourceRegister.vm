@@ -1,3 +1,4 @@
+
 /**
 * Copyright © 2016 MIMOS Berhad. All Rights Reserved 
 *
@@ -12,7 +13,9 @@
 * 
 */
 
-package my.mimos.tpcohcis.report.nontpchims.nhph012.generate.model;
+## Include
+#parse("include/var_entity.vm")
+package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -26,10 +29,10 @@ import my.mimos.tpcohcis.report.shared.model.AbstractReportEntity;
 
 
 @Entity
-@Table(name = "rpt_nontpchims_nhph012_src_registry", schema = "report")
-public class Nhph012SourceRegister extends AbstractReportEntity implements Serializable {
+@Table(name = "rpt_nontpchims_${entityInstance}_src_registry", schema = "report")
+public class ${entityClass}SourceRegister extends AbstractReportEntity implements Serializable {
     
-    	@Id
+    @Id
 	@Column(name = "EPISODE_DIAGNOSIS_ID")
 	private Long episodeDiagnosisId;
 			

@@ -1,6 +1,6 @@
 ## Include
 #parse("include/var_entity.vm")
-## Use macro resolve header
+
 
 
 /**
@@ -17,7 +17,8 @@
 * 
 */
 
-#package($SRC)
+
+package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model;
 /*
 ## Use macro resolve imports
 #imports($entity.attributes true)

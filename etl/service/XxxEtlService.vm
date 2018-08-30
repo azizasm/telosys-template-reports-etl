@@ -12,7 +12,7 @@
 * 
 */
 
-package my.mimos.tpcohcis.report.nontpchims.nhph012.etl.service;
+package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.etl.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,25 +34,25 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import my.mimos.tpcohcis.DataETL;
-import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.model.Nhph012;
-import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.model.Nhph012SourceRegister;
-import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.repository.Nhph012Repository;
-import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.repository.Nhph012SourceRegisterRepository;
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model.${entityClass};
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model.${entityClass}SourceRegister;
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.repository.${entityClass}Repository;
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.repository.${entityClass}SourceRegisterRepository;
 import my.mimos.tpcohcis.report.shared.util.ReportUtil;
 import my.mimos.tpcohcis.shared.util.DateUtil;
 
 @Service
-public class Nhph012EtlService implements DataETL {
-  private static final Logger LOGGER = LoggerFactory.getLogger(Nhph012EtlService.class);
+public class ${entityClass}EtlService implements DataETL {
+  private static final Logger LOGGER = LoggerFactory.getLogger(${entityClass}EtlService.class);
 
     @Autowired
-    Nhph012Repository nhph012Repository;
+    ${entityClass}Repository ${entityInstance}Repository;
     
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    private Nhph012SourceRegisterRepository nhph012SourceRegisterRepo;
+    private ${entityClass}SourceRegisterRepository ${entityInstance}SourceRegisterRepo;
 
     @Value("${report.configuration.fetchsize}")
     private Integer maxFetchSize;
@@ -61,7 +61,7 @@ public class Nhph012EtlService implements DataETL {
     public void doETL(LocalDateTime startDate, LocalDateTime endDate) {
 	
 	StringBuilder strBody=new StringBuilder();
-	strBody.append("  from trx_cd_episode_diagnosis  ed"
+	strBody.append("  from trx_cd_episode_diagnosis  ed"   // TODO
 	    + " inner join trx_pm_patient_visit v on ed.patient_visit_id = v.visit_id"
 	    + " inner join mst_pm_patient p on ( v.patient_id = p.patient_id)"
 	    + " inner join mst_am_facility f on (v.clinic_id = f.facility_id)"
@@ -71,7 +71,7 @@ public class Nhph012EtlService implements DataETL {
 	    + " left outer join trx_pm_death_information di on p.patient_id = di.patient_id"
 	    + " WHERE 1=1"
 	    + " and ( ed.diagnosis_code like 'A0%' or di.immediate_course_of_death like 'A0%') "
-	    + " AND ed.episode_diagnosis_id not in (select r.episode_diagnosis_id from report.rpt_nontpchims_nhph012_src_registry r , trx_cd_episode_diagnosis ci where ci.episode_diagnosis_id = r.episode_diagnosis_id "
+	    + " AND ed.episode_diagnosis_id not in (select r.episode_diagnosis_id from report.rpt_nontpchims_${entityInstance}_src_registry r , trx_cd_episode_diagnosis ci where ci.episode_diagnosis_id = r.episode_diagnosis_id "
 	    + " and ((ci.updated_at is not null AND ci.updated_at = r.updated_at) or (ci.updated_at is null AND ci.created_at = r.updated_at))) "
 	    );
 	
@@ -79,6 +79,8 @@ public class Nhph012EtlService implements DataETL {
 	strCount.append("select count(*) " + strBody);
 	
 	StringBuilder strQuery=new StringBuilder();
+
+	// TODO
 	strQuery.append("SELECT"
 	    + " sta.state_name as state,"
 	    + " dst.district_name as district,"
@@ -119,7 +121,7 @@ public class Nhph012EtlService implements DataETL {
 	  Timestamp createdAt= null;
 	  Timestamp updatedAt= null;
 	  for (Object[] obj : listResult) {
-	      	Nhph012 nhph= new Nhph012();
+	      	${entityClass} nhph= new ${entityClass}();
 	      	nhph.setStateName(getString(obj[0]));
 	      	nhph.setDistrictName(getString(obj[1]));
 	      	nhph.setFacilityName(getString(obj[2]));
@@ -135,11 +137,11 @@ public class Nhph012EtlService implements DataETL {
 	      	nhph.setBirthDate(getDate(obj[11]));
 	      	nhph.setDeathDate(getDate(obj[12]));
 	      	nhph.setFacilityId(getLong(obj[13]));
-	      	nhph012Repository.save(nhph);
+	      	${entityInstance}Repository.save(nhph);
 		    
-		Nhph012SourceRegister nhph003SourceRegistr = nhph012SourceRegisterRepo.findOne(nhph.getEpisodeDiagnosisId());
+		${entityClass}SourceRegister nhph003SourceRegistr = ${entityInstance}SourceRegisterRepo.findOne(nhph.getEpisodeDiagnosisId());
 		if(nhph003SourceRegistr == null) {
-		  nhph003SourceRegistr = new Nhph012SourceRegister();
+		  nhph003SourceRegistr = new ${entityClass}SourceRegister();
 		  nhph003SourceRegistr.setEpisodeDiagnosisId(nhph.getEpisodeDiagnosisId());
 		} 
 		if(updatedAt != null){
@@ -147,7 +149,7 @@ public class Nhph012EtlService implements DataETL {
 		} else {
 		  nhph003SourceRegistr.setUpdatedAt(createdAt);
 		}
-		nhph012SourceRegisterRepo.save(nhph003SourceRegistr);
+		${entityInstance}SourceRegisterRepo.save(nhph003SourceRegistr);
 		    
 	    }
 	  processedRecords++;
@@ -214,7 +216,7 @@ public class Nhph012EtlService implements DataETL {
 
   @Override
   public String getReportCode() {
-    return "NHPH012";
+    return "${entityCaps}";
   }
 
 }

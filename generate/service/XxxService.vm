@@ -1,4 +1,4 @@
-package my.mimos.tpcohcis.report.nontpchims.nhph012.generate.service;
+package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.dto.Nhph012Dto;
-import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.model.Nhph012;
-import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.repository.Nhph012Repository;
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.dto.${entityClass}Dto;
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model.${entityClass};
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.repository.${entityClass}Repository;
 
 /**
  * @author krao.kamma
@@ -27,33 +27,33 @@ import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.repository.Nhph012Re
  */
 
 @Service
-public class Nhph012Service {
+public class ${entityClass}Service {
 	
-	final Logger LOG = LoggerFactory.getLogger(Nhph012Service.class);
+	final Logger LOG = LoggerFactory.getLogger(${entityClass}Service.class);
 
 	@Autowired
-	private Nhph012Repository nhph012Repository;
+	private ${entityClass}Repository ${entityInstance}Repository;
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	@Transactional
-	public List<Nhph012Dto> getDataReportDetails(Timestamp from, Timestamp to , Integer facilityId, Integer districtId, Integer stateId ) {
+	public List<${entityClass}Dto> getDataReportDetails(Timestamp from, Timestamp to , Integer facilityId, Integer districtId, Integer stateId ) {
 
-	  List<Nhph012Dto> dtoList = new ArrayList<Nhph012Dto>();
-		List<Object[]> nhph012DtoLists = new ArrayList<Object[]>(0);
+	  List<${entityClass}Dto> dtoList = new ArrayList<${entityClass}Dto>();
+		List<Object[]> ${entityInstance}DtoLists = new ArrayList<Object[]>(0);
 		if(null != facilityId){
-		    nhph012DtoLists = nhph012Repository.findByYearAndMonthAndClinic( from, to , facilityId.longValue() );
+		    ${entityInstance}DtoLists = ${entityInstance}Repository.findByYearAndMonthAndClinic( from, to , facilityId.longValue() );
 		}
 		else if(null != districtId && null != stateId){
-		    nhph012DtoLists = nhph012Repository.findByYearAndMonthAndDistrict(from , to, districtId.longValue(), stateId.longValue());
+		    ${entityInstance}DtoLists = ${entityInstance}Repository.findByYearAndMonthAndDistrict(from , to, districtId.longValue(), stateId.longValue());
 		}else if(null != stateId && null== districtId){
-		    nhph012DtoLists = nhph012Repository.findByYearAndMonthAndState(from, to, stateId.longValue());
+		    ${entityInstance}DtoLists = ${entityInstance}Repository.findByYearAndMonthAndState(from, to, stateId.longValue());
 		}
 		
-		if(null != nhph012DtoLists && !nhph012DtoLists.isEmpty()){
-          		for (Object[] obj : nhph012DtoLists) {
-          		  Nhph012Dto dto = new Nhph012Dto();
+		if(null != ${entityInstance}DtoLists && !${entityInstance}DtoLists.isEmpty()){
+          		for (Object[] obj : ${entityInstance}DtoLists) {
+          		  ${entityClass}Dto dto = new ${entityClass}Dto();
           		  dto.setStateName(getString(obj[0]));
           		  dto.setDistrictName(getString(obj[1]));
           		  dto.setFacilityName(getString(obj[2]));

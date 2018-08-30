@@ -12,7 +12,7 @@
 * 
 */
 
-package my.mimos.tpcohcis.report.nontpchims.nhph012.generate.dto;
+package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.dto;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 import javax.persistence.Column;
 import javax.persistence.Id;
 
-public class Nhph012Dto {
+public class ${entityClass}Dto {
 
 	private String stateName;
 	private String districtName;
@@ -42,7 +42,7 @@ public class Nhph012Dto {
 	private Long totalOpd;
 	private Long totalD;
 
-	public Nhph012Dto() {
+	public ${entityClass}Dto() {
 
 	}
 

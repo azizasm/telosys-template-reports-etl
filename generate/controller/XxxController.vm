@@ -8,7 +8,7 @@
 *   * 
 */
 
-package my.mimos.tpcohcis.report.nontpchims.nhph012.generate.controller;
+package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.controller;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -37,9 +37,9 @@ import my.mimos.tpcohcis.module.admin.facility.model.HealthFacility;
 import my.mimos.tpcohcis.module.admin.facility.repository.HealthFacilityRepository;
 import my.mimos.tpcohcis.module.cd.report.dto.ReportRequestDTO;
 import my.mimos.tpcohcis.module.cd.shared.FileGeneratorUtil;
-import my.mimos.tpcohcis.report.nontpchims.nhph012.etl.service.Nhph012EtlService;
-import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.dto.Nhph012Dto;
-import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.service.Nhph012Service;
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.etl.service.${entityClass}EtlService;
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.dto.${entityClass}Dto;
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.service.${entityClass}Service;
 import my.mimos.tpcohcis.report.shared.util.ReportCommonHeaderUtil;
 import my.mimos.tpcohcis.report.shared.util.ReportConstants;
 import my.mimos.tpcohcis.shared.exception.ApplicationException;
@@ -50,20 +50,20 @@ import my.mimos.tpcohcis.shared.repository.StateRepository;
 
 @RestController
 @RequestMapping("/report/nontpchims")
-public class Nhph012Controller {
+public class ${entityClass}Controller {
 
 	@Autowired
 	private FileGeneratorUtil generatorUtil;
 
 	@Autowired
-	private Nhph012Service nhph012Service;
+	private ${entityClass}Service ${entityInstance}Service;
 	@Autowired
-	private Nhph012EtlService nhph012EtlService;
+	private ${entityClass}EtlService ${entityInstance}EtlService;
 	
 	@Autowired
 	ReportCommonHeaderUtil reportCommonHeaderUtil;
 		
-	@RequestMapping(value = "NHPH012", method = RequestMethod.GET)
+	@RequestMapping(value = "${entityCaps}", method = RequestMethod.GET)
 	public void viewNbos10Report(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
 	        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to, @RequestParam(required = false) Integer month,
 	        @RequestParam(required = false) Integer year, 
@@ -90,17 +90,17 @@ public class Nhph012Controller {
 			year= from.getYear();
 		}
 
-		List<Nhph012Dto> jasperList = new ArrayList<Nhph012Dto>();
+		List<${entityClass}Dto> jasperList = new ArrayList<${entityClass}Dto>();
 		
 		try {
 		  	Timestamp tsFrom = Timestamp.valueOf(from);
 		  	Timestamp tsTo = Timestamp.valueOf(to);
-		  	List<Nhph012Dto> dtoList = nhph012Service.getDataReportDetails(tsFrom, tsTo , clinic, district, state );
+		  	List<${entityClass}Dto> dtoList = ${entityInstance}Service.getDataReportDetails(tsFrom, tsTo , clinic, district, state );
 			
 			jasperList.addAll(dtoList);
 			Map<String, Object> parameters = reportCommonHeaderUtil.getHeaderParametersForTPCHIMSCustomMonth(from, to, clinic, district, state, 1);	
 			
-			String filename="NHPH012";
+			String filename="${entityCaps}";
 			if (format.equals(ReportConstants.EXPORT_FORMAT_PDF)) {
 			  //
 			} else if (format.equals(ReportConstants.EXPORT_FORMAT_EXCEL)) {
@@ -109,7 +109,7 @@ public class Nhph012Controller {
 			} else if (format.equals(ReportConstants.EXPORT_FORMAT_DOCX)) {
 			  //
 			}
-			ReportRequestDTO< Nhph012Dto > requestDTO = new ReportRequestDTO< Nhph012Dto >(response, jasperTemplate, filename, jasperList, parameters);
+			ReportRequestDTO< ${entityClass}Dto > requestDTO = new ReportRequestDTO< ${entityClass}Dto >(response, jasperTemplate, filename, jasperList, parameters);
 			generatorUtil.generateReport(requestDTO, format);
 			
 		} catch (Exception e) {
@@ -118,11 +118,11 @@ public class Nhph012Controller {
 
 	}
 		
-	@RequestMapping(value = "NHPH012/etl", method = RequestMethod.GET)
+	@RequestMapping(value = "${entityCaps}/etl", method = RequestMethod.GET)
 	public void doETL(@RequestParam(required = true) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime fromDate,
 	        @RequestParam(required = true) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime toDate,
 	        HttpServletResponse response) {
 					
-	  nhph012EtlService.doETL(fromDate, toDate);
+	  ${entityInstance}EtlService.doETL(fromDate, toDate);
 	}
 }

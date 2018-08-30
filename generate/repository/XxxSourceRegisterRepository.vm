@@ -1,9 +1,10 @@
-package my.mimos.tpcohcis.report.nontpchims.nhph012.generate.repository;
+#parse("include/var_entity.vm")
+package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import my.mimos.tpcohcis.report.nontpchims.nhph012.generate.model.Nhph012SourceRegister;
+import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model.${entityClass}SourceRegister;
 
-public interface Nhph012SourceRegisterRepository extends JpaRepository<Nhph012SourceRegister, Long> {
+public interface ${entityClass}SourceRegisterRepository extends JpaRepository<${entityClass}SourceRegister, Long> {
        
 }
