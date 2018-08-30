@@ -56,7 +56,7 @@ public class ${entityClass}EtlService implements DataETL {
     @Autowired
     private ${entityClass}SourceRegisterRepository ${entityInstance}SourceRegisterRepo;
 
-    @Value("${report.configuration.fetchsize}")
+    @Value("$${startbrace}report.configuration.fetchsize${endbrace}")
     private Integer maxFetchSize;
 	
     @Override
