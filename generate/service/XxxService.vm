@@ -58,7 +58,7 @@ public class ${entityClass}Service {
 
 				#foreach($field in $entity.nonKeyAttributes)
 				#if ($field.setter)    
-					dto.${field.setter}(get${field.type}(obj[($velocityCount - $one)]));
+					dto.${field.setter}(get${field.type}(obj[$foreach.index]));
 				#end
 				#end 
 
