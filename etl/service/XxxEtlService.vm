@@ -127,11 +127,11 @@ public class ${entityClass}EtlService implements DataETL {
 	  for (Object[] obj : listResult) {
 	      	${entityClass} nhph= new ${entityClass}();
 
-				#foreach($field in $entity.nonKeyAttributes)
-				#if ($field.setter)    
-					nhph.${field.setter}(get${field.type}(obj[$foreach.index]));
-				#end
-				#end 			
+#foreach($field in $entity.nonKeyAttributes)
+#if ($field.setter)    
+	nhph.${field.setter}(get${field.type}(obj[$foreach.index]));
+#end
+#end 			
 				/*		
 
 	      	createdAt= getTimestamp(obj[9]);
@@ -141,17 +141,17 @@ public class ${entityClass}EtlService implements DataETL {
 					*/
 	      	${entityInstance}Repository.save(nhph);
 		    
-		${entityClass}SourceRegister nhph003SourceRegistr = ${entityInstance}SourceRegisterRepo.findOne(nhph.getEpisodeDiagnosisId());
-		if(nhph003SourceRegistr == null) {
-		  nhph003SourceRegistr = new ${entityClass}SourceRegister();
-		  nhph003SourceRegistr.setEpisodeDiagnosisId(nhph.getEpisodeDiagnosisId());
+		${entityClass}SourceRegister ${entityInstance}SourceRegistr = ${entityInstance}SourceRegisterRepo.findOne(nhph.getEpisodeDiagnosisId());
+		if(${entityInstance}SourceRegistr == null) {
+		  ${entityInstance}SourceRegistr = new ${entityClass}SourceRegister();
+		  ${entityInstance}SourceRegistr.setEpisodeDiagnosisId(nhph.getEpisodeDiagnosisId());
 		} 
 		if(updatedAt != null){
-		  nhph003SourceRegistr.setUpdatedAt(updatedAt );
+		  ${entityInstance}SourceRegistr.setUpdatedAt(updatedAt );
 		} else {
-		  nhph003SourceRegistr.setUpdatedAt(createdAt);
+		  ${entityInstance}SourceRegistr.setUpdatedAt(createdAt);
 		}
-		${entityInstance}SourceRegisterRepo.save(nhph003SourceRegistr);
+		${entityInstance}SourceRegisterRepo.save(${entityInstance}SourceRegistr);
 		    
 	    }
 	  processedRecords++;
