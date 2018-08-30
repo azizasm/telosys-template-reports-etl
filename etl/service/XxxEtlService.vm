@@ -63,7 +63,9 @@ public class ${entityClass}EtlService implements DataETL {
     public void doETL(LocalDateTime startDate, LocalDateTime endDate) {
 	
 	StringBuilder strBody=new StringBuilder();
-	strBody.append("  from trx_cd_episode_diagnosis  ed"   // TODO
+
+	// TODO : need to change
+	strBody.append("  from trx_cd_episode_diagnosis  ed"   
 	    + " inner join trx_pm_patient_visit v on ed.patient_visit_id = v.visit_id"
 	    + " inner join mst_pm_patient p on ( v.patient_id = p.patient_id)"
 	    + " inner join mst_am_facility f on (v.clinic_id = f.facility_id)"
@@ -82,7 +84,7 @@ public class ${entityClass}EtlService implements DataETL {
 	
 	StringBuilder strQuery=new StringBuilder();
 
-	// TODO
+	// TODO : need to change
 	strQuery.append("SELECT"
 	    + " sta.state_name as state,"
 	    + " dst.district_name as district,"
@@ -127,7 +129,7 @@ public class ${entityClass}EtlService implements DataETL {
 
 				#foreach($field in $entity.nonKeyAttributes)
 				#if ($field.setter)    
-					nhph.${field.setter}(get${field.type}(obj[${velocityCount}]));
+					nhph.${field.setter}(get${field.type}(obj[($velocityCount - $one)]));
 				#end
 				#end 			
 				/*		
