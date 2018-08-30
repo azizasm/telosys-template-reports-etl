@@ -1,3 +1,4 @@
+#parse("include/var_entity.vm")
 /**
 * Copyright � 2015 MIMOS Berhad. All Rights Reserved 
 *

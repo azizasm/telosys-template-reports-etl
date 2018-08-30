@@ -1,3 +1,4 @@
+#parse("include/var_entity.vm")
 package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.service;
 
 import java.math.BigDecimal;
