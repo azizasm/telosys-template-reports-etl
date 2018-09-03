@@ -9,7 +9,7 @@
 *   * 
 */
 
-package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.controller;
+package my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.controller;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -38,9 +38,9 @@ import my.mimos.tpcohcis.module.admin.facility.model.HealthFacility;
 import my.mimos.tpcohcis.module.admin.facility.repository.HealthFacilityRepository;
 import my.mimos.tpcohcis.module.cd.report.dto.ReportRequestDTO;
 import my.mimos.tpcohcis.module.cd.shared.FileGeneratorUtil;
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.etl.service.${entityClass}EtlService;
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.dto.${entityClass}Dto;
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.service.${entityClass}Service;
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.etl.service.${entityClass}EtlService;
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.dto.${entityClass}Dto;
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.service.${entityClass}Service;
 import my.mimos.tpcohcis.report.shared.util.ReportCommonHeaderUtil;
 import my.mimos.tpcohcis.report.shared.util.ReportConstants;
 import my.mimos.tpcohcis.shared.exception.ApplicationException;
@@ -50,7 +50,7 @@ import my.mimos.tpcohcis.shared.repository.DistrictRepository;
 import my.mimos.tpcohcis.shared.repository.StateRepository;
 
 @RestController
-@RequestMapping("/report/nontpchims")
+@RequestMapping("/report/${groupName}")
 public class ${entityClass}Controller {
 
 	@Autowired

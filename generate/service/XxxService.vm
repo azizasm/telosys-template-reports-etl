@@ -1,5 +1,5 @@
 #parse("include/var_entity.vm")
-package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.service;
+package my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.dto.${entityClass}Dto;
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model.${entityClass};
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.repository.${entityClass}Repository;
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.dto.${entityClass}Dto;
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.model.${entityClass};
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.repository.${entityClass}Repository;
 
 /**
  * @author krao.kamma

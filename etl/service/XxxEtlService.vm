@@ -14,7 +14,7 @@
 * 
 */
 
-package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.etl.service;
+package my.mimos.tpcohcis.report.${groupName}.${entityInstance}.etl.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -36,10 +36,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import my.mimos.tpcohcis.DataETL;
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model.${entityClass};
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model.${entityClass}SourceRegister;
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.repository.${entityClass}Repository;
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.repository.${entityClass}SourceRegisterRepository;
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.model.${entityClass};
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.model.${entityClass}SourceRegister;
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.repository.${entityClass}Repository;
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.repository.${entityClass}SourceRegisterRepository;
 import my.mimos.tpcohcis.report.shared.util.ReportUtil;
 import my.mimos.tpcohcis.shared.util.DateUtil;
 
@@ -75,7 +75,7 @@ public class ${entityClass}EtlService implements DataETL {
 	    + " left outer join trx_pm_death_information di on p.patient_id = di.patient_id"
 	    + " WHERE 1=1"
 	    + " and ( ed.diagnosis_code like 'A0%' or di.immediate_course_of_death like 'A0%') "
-	    + " AND ed.episode_diagnosis_id not in (select r.episode_diagnosis_id from report.rpt_nontpchims_${entityInstance}_src_registry r , trx_cd_episode_diagnosis ci where ci.episode_diagnosis_id = r.episode_diagnosis_id "
+	    + " AND ed.episode_diagnosis_id not in (select r.episode_diagnosis_id from report.rpt_${groupName}_${entityInstance}_src_registry r , trx_cd_episode_diagnosis ci where ci.episode_diagnosis_id = r.episode_diagnosis_id "
 	    + " and ((ci.updated_at is not null AND ci.updated_at = r.updated_at) or (ci.updated_at is null AND ci.created_at = r.updated_at))) "
 	    );
 	

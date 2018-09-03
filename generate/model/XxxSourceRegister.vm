@@ -15,7 +15,7 @@
 
 ## Include
 #parse("include/var_entity.vm")
-package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model;
+package my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -29,7 +29,7 @@ import my.mimos.tpcohcis.report.shared.model.AbstractReportEntity;
 
 
 @Entity
-@Table(name = "rpt_nontpchims_${entityInstance}_src_registry", schema = "report")
+@Table(name = "rpt_${groupName}_${entityInstance}_src_registry", schema = "report")
 public class ${entityClass}SourceRegister extends AbstractReportEntity implements Serializable {
     
     @Id

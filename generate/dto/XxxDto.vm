@@ -13,7 +13,7 @@
 * 
 */
 
-package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.dto;
+package my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.dto;
 
 import java.util.Date;
 import java.util.HashMap;

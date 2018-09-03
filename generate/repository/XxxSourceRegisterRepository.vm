@@ -1,9 +1,9 @@
 #parse("include/var_entity.vm")
-package my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.repository;
+package my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import my.mimos.tpcohcis.report.nontpchims.${entityInstance}.generate.model.${entityClass}SourceRegister;
+import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.model.${entityClass}SourceRegister;
 
 public interface ${entityClass}SourceRegisterRepository extends JpaRepository<${entityClass}SourceRegister, Long> {
        

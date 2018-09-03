@@ -12,8 +12,10 @@
 #set($pack_service            = "${ROOT_PKG}.service")
 #set($pack_criteria           = "${pack_service}.criteria")
 ## Author
-#set($author    			  = "@author Telosys (http://www.telosys.org/) version ${generator.version}")
+#set($author    			  = "@author aziz")
 
 #set( $startbrace = "{" )
 #set( $endbrace = "}" )
 #set( $one = 1 )
+
+#set($groupName                = "${groupName}")
