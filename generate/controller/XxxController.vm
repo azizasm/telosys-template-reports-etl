@@ -74,7 +74,8 @@ public class ${entityClass}Controller {
 	        @RequestParam String format,
 	        HttpServletResponse response) {
 
-		String jasperTemplate = ReportConstants.NONTPCHIMS_REPORT_TEMPLATES_PATH + "tpc_nh_ph_012.jrxml";
+
+		String jasperTemplate = ReportConstants.NONTPCHIMS_REPORT_TEMPLATES_PATH + "tpc_${entityInstance}.jrxml";
 
 		System.out.println("jasperTemplate filename = " + jasperTemplate);
 

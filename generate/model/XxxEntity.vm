@@ -8,7 +8,7 @@
 * belong to MIMOS Berhad. Any reproduction, modification, distribution 
 * or republishing materials without prior written consent is prohibited.
 *   
-* Class name: com.mimos.tpcohcis.report.tpchims.PERSSRA201.generate.model
+* Class name: com.mimos.tpcohcis.report.tpchims.${entityInstance}.generate.model
 * Description: 
 * 
 * 
