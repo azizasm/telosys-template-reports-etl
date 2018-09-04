@@ -1,7 +1,7 @@
-#parse("include/var_entity.vm")
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
 <!-- 2018-09-04T10:08:30 -->
+#parse("include/var_entity.vm")
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tpc_${entityInstance}" pageWidth="1190" pageHeight="842" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1150" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0112f89b-1547-4000-ac26-8294eb6bff07">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -25,13 +25,13 @@
 
 
 #foreach($field in $entity.nonKeyAttributes)
-	<field name="${field.name}" class="java.lang.${field.type}">
+	<field name="${field.name}" class="${field.fullType}">
 		<fieldDescription><![CDATA[${field.name}]]></fieldDescription>
 	</field>
 #end
 
 #foreach($field in $entity.nonKeyAttributes)
-	<variable name="${field.name}" class="java.lang.${field.type}" calculation="Sum">
+	<variable name="${field.name}" class="${field.fullType}" calculation="Sum">
 		<variableExpression><![CDATA[${dollar}F{${field.name}}]]></variableExpression>
 	</variable>
 #end
