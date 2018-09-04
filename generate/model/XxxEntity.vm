@@ -47,36 +47,49 @@ public class $entityClass extends AbstractReportEntity implements Serializable {
     // ENTITY PRIMARY KEY ( BASED ON A SINGLE FIELD )
     //----------------------------------------------------------------------
 #foreach($field in $entity.keyAttributes)
-$jpa.fieldAnnotations(4, $field)
-    private $field.type $field.name #if($field.hasInitialValue())= ${field.initialValue} #end; #if($field.isFK())// Foreign Key #end 
+##$jpa.fieldAnnotations(4, $field)
+##    private $field.type $field.name #if($field.hasInitialValue())= ${field.initialValue} #end; #if($field.isFK())// Foreign Key #end 
+	@Id
+	@Column(name = "ID")
+	private Long id;
 #end
 #end
+
+#set( $regex = "([a-z])([A-Z]+)")
+#set( $replacement = "$1_$2")
+
 
     //----------------------------------------------------------------------
     // ENTITY DATA FIELDS 
     //----------------------------------------------------------------------    
+
 #foreach($field in $entity.nonKeyAttributes)
-$jpa.fieldAnnotations(4, $field)
+##$jpa.fieldAnnotations(4, $field)
+#set( $toDash = $field.name.replaceAll($regex, $replacement).toUpperCase())
+    @Column(name = "${toDash}") 
     private $field.type $field.name #if($field.hasInitialValue())= ${field.initialValue} #end; #if($field.isFK())// Foreign Key #end 
+
+
 #end
 
 
-    //----------------------------------------------------------------------
-    // CONSTRUCTOR(S)
-    //----------------------------------------------------------------------
-    public $entityClass() {
-		super();
-#if($compositeKey)        
-		this.compositePrimaryKey = new ${entityKeyClass}();       
-#end
-    }
+##    //----------------------------------------------------------------------
+##    // CONSTRUCTOR(S)
+##    //----------------------------------------------------------------------
+##    public $entityClass() {
+##		super();
+## #if($compositeKey)        
+##		this.compositePrimaryKey = new ${entityKeyClass}();       
+## #end
+##    }
 
     //----------------------------------------------------------------------
     // GETTER & SETTER FOR THE KEY FIELD
     //----------------------------------------------------------------------
+##        // TODO : Change long to Long
 #foreach($field in $entity.keyAttributes)
 #if ($field.setter)    
-	public void ${field.setter}($field.type $field.name) {
+	public void ${field.setter}(Long $field.name) {
 #if($compositeKey)  
         this.compositePrimaryKey.${field.setter}($field.name) ;
 #else
@@ -85,7 +98,7 @@ $jpa.fieldAnnotations(4, $field)
     }
 #end
 #if($field.getter)    
-	public $field.type ${field.getter}() {
+	public Long ${field.getter}() {
 #if($compositeKey)  
         return this.compositePrimaryKey.${field.getter}() ;
 #else

@@ -1,0 +1,8 @@
+CREATE TABLE report.rpt_${groupName}_${entityInstance}
+(
+  id bigint NOT NULL,
+  
+  visit_id bigint NOT NULL,
+  updated_at timestamp without time zone,
+  CONSTRAINT rpt_${groupName}_${entityInstance}_pkey PRIMARY KEY (visit_id)
+);
