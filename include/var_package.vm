@@ -14,6 +14,7 @@
 ## Author
 #set($author    			  = "@author aziz")
 
+#set( $dollar = "$" )
 #set( $startbrace = "{" )
 #set( $endbrace = "}" )
 #set( $one = 1 )

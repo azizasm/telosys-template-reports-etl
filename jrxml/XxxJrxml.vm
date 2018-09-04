@@ -32,7 +32,7 @@
 
 #foreach($field in $entity.nonKeyAttributes)
 	<variable name="${field.name}" class="java.lang.${field.type}" calculation="Sum">
-		<variableExpression><![CDATA[$F{${field.name}}]]></variableExpression>
+		<variableExpression><![CDATA[${dollar}F{${field.name}}]]></variableExpression>
 	</variable>
 #end
 	<background>
@@ -333,7 +333,7 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F${startbrace}${field.name}${endbrace}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[${dollar}F${startbrace}${field.name}${endbrace}]]></textFieldExpression>
 			</textField>
 #set($i = $i+110)
 #end
@@ -350,7 +350,7 @@
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="${i}" y="0" width="110" height="20" uuid="85dd27cc-8b3e-42c2-9d2a-ceaff87841f7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V${startbrace}${field.name}${endbrace}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[${dollar}V${startbrace}${field.name}${endbrace}]]></textFieldExpression>
 			</textField>
 #set($i = $i+110)
 #end
