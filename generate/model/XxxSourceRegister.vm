@@ -32,12 +32,20 @@ import my.mimos.tpcohcis.report.shared.model.AbstractReportEntity;
 @Table(name = "rpt_${groupName}_${entityInstance}_src_registry", schema = "report")
 public class ${entityClass}SourceRegister extends AbstractReportEntity implements Serializable {
     
-    @Id
-	@Column(name = "EPISODE_DIAGNOSIS_ID")
-	private Long episodeDiagnosisId;
-			
+  	@Id
+	@Column(name = "VISIT_ID")
+	private Long visitId;
+	
 	@Column(name = "UPDATED_AT")
 	protected Timestamp updatedAt;
+
+	public Long getVisitId() {
+		return visitId;
+	}
+
+	public void setVisitId(Long visitId) {
+		this.visitId = visitId;
+	}
 
 	public Timestamp getUpdatedAt() {
 		return updatedAt;
@@ -47,12 +55,5 @@ public class ${entityClass}SourceRegister extends AbstractReportEntity implement
 		this.updatedAt = updatedAt;
 	}
 
-	public Long getEpisodeDiagnosisId() {
-	  return episodeDiagnosisId;
-	}
-
-	public void setEpisodeDiagnosisId(Long episodeDiagnosisId) {
-	  this.episodeDiagnosisId = episodeDiagnosisId;
-	}
 
 }

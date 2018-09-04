@@ -23,7 +23,7 @@ import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.model.${
 import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.repository.${entityClass}Repository;
 
 /**
- * @author krao.kamma
+ * @author 
  *
  */
 

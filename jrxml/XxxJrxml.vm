@@ -24,6 +24,7 @@
 	</queryString>
 
 #set($fwidth = 50)
+
 #set($fMaxPos = 720)
 #set($fStartPos = 80)
 #set($totalField = 0)
@@ -213,6 +214,12 @@
 
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="${i}" y="0" width="$fwidth" height="20" uuid="85dd27cc-8b3e-42c2-9d2a-ceaff87841f7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>				
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[${dollar}V${startbrace}${field.name}${endbrace}]]></textFieldExpression>
 			</textField>
