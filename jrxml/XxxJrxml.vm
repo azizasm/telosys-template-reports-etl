@@ -23,12 +23,18 @@
 		<![CDATA[]]>
 	</queryString>
 
+#set($fwidth = 50)
+#set($fMaxPos = 720)
+#set($fStartPos = 80)
+#set($totalField = 0)
 
 #foreach($field in $entity.nonKeyAttributes)
 	<field name="${field.name}" class="${field.fullType}">
 		<fieldDescription><![CDATA[${field.name}]]></fieldDescription>
 	</field>
+	#set($totalField = $totalField + 1)
 #end
+#set($fwidth = ($fMaxPos -$fStartPos) / $totalField )
 
 #foreach($field in $entity.nonKeyAttributes)
 	<variable name="${field.name}" class="${field.fullType}" calculation="Sum">
@@ -139,7 +145,7 @@
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[BANGSA]]></text>
+				<text><![CDATA[Field1]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="520" y="-3" width="100" height="20" uuid="2bc9bc69-7625-4aa1-8b12-f0cc58c4e70a"/>
@@ -147,7 +153,7 @@
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[JANTINA]]></text>
+				<text><![CDATA[Field2]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="620" y="-3" width="100" height="20" uuid="64bfa00a-9364-4642-998b-38c28aa9c034"/>
@@ -155,21 +161,21 @@
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[UMUR]]></text>
+				<text><![CDATA[Field3]]></text>
 			</staticText>
 
 
-#set($i = 80)
+#set($i = $fStartPos)
 #foreach($field in $entity.nonKeyAttributes)
 			<staticText>
-				<reportElement x="${i}" y="17" width="50" height="20" uuid="8a86665a-a804-4189-8475-ecb0d2f1b1f8"/>
+				<reportElement x="${i}" y="17" width="$fwidth" height="20" uuid="8a86665a-a804-4189-8475-ecb0d2f1b1f8"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[${field.name}]]></text>
 			</staticText>
-#set($i = $i+50)
+#set($i = $i+$fwidth)
 #end
 
 
@@ -177,92 +183,13 @@
 	</columnHeader>
 	<detail>
 		<band height="21">
-			<staticText>
-				<reportElement x="321" y="0" width="49" height="20" uuid="d7accf22-aa1f-4558-acc3-9f51b39aa12d">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="81" y="0" width="129" height="20" uuid="3bf54d52-0df3-4b15-8cc7-b8f14ebade70">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="470" y="0" width="50" height="20" uuid="eeeed27b-1dc3-442a-a01e-dbb8dc434f54">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="520" y="0" width="50" height="20" uuid="bd78d172-783b-41c5-81cb-dc7fc4497b37">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="570" y="0" width="50" height="20" uuid="391ea498-20d7-443f-bb42-67611d9a56b3">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="370" y="0" width="49" height="20" uuid="b99b136e-ee0a-4074-92ec-47a6a52e093b">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="620" y="0" width="50" height="20" uuid="9f9b03bc-43e9-43be-9a2f-fc0de2365c52">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="671" y="0" width="50" height="20" uuid="d87ee438-bedc-418c-a935-38dc63a47be2">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[]]></text>
-			</staticText>
+			
 
-#set($i = 210)
+#set($i = $fStartPos)
 #foreach($field in $entity.nonKeyAttributes)
 
 			<textField>
-				<reportElement x="${i}" y="0" width="110" height="20" uuid="c208450b-101c-4402-8a98-e545e7a1ea86"/>
+				<reportElement x="${i}" y="0" width="$fwidth" height="20" uuid="c208450b-101c-4402-8a98-e545e7a1ea86"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -272,7 +199,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[${dollar}F${startbrace}${field.name}${endbrace}]]></textFieldExpression>
 			</textField>
-#set($i = $i+50)
+#set($i = $i+$fwidth)
 #end
 
 
@@ -281,15 +208,15 @@
 	<summary>
 		<band height="90">
 
-#set($i = 210)
+#set($i = $fStartPos)
 #foreach($field in $entity.nonKeyAttributes)
 
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="${i}" y="0" width="110" height="20" uuid="85dd27cc-8b3e-42c2-9d2a-ceaff87841f7"/>
+				<reportElement x="${i}" y="0" width="$fwidth" height="20" uuid="85dd27cc-8b3e-42c2-9d2a-ceaff87841f7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[${dollar}V${startbrace}${field.name}${endbrace}]]></textFieldExpression>
 			</textField>
-#set($i = $i+50)
+#set($i = $i+$fwidth)
 #end
 			<staticText>
 				<reportElement x="120" y="50" width="110" height="20" uuid="11f83e4d-3ac5-4e37-b796-9e38defb1d01"/>
