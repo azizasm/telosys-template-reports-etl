@@ -132,22 +132,7 @@
 	</pageHeader>
 	<columnHeader>
 		<band height="40" splitType="Stretch">
-			<staticText>
-				<reportElement x="80" y="-3" width="130" height="40" uuid="8a86665a-a804-4189-8475-ecb0d2f1b1f8"/>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[NEGERI]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="210" y="-3" width="110" height="40" uuid="fbacf019-ca1e-4ca2-b246-4582d3311ffe"/>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[JUMLAH KES BARU* BERDAFTAR]]></text>
-			</staticText>
+
 			<staticText>
 				<reportElement x="320" y="-3" width="200" height="20" uuid="65e621db-e882-4161-ae83-b9bd9d3426ad"/>
 				<box>
@@ -165,54 +150,6 @@
 				<text><![CDATA[JANTINA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="320" y="17" width="50" height="20" uuid="3f483b7b-9efc-4865-aed9-5829fb471016"/>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[M]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="370" y="17" width="50" height="20" uuid="429212d9-29af-43d1-ad1e-5026f5b18899"/>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[C]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="420" y="17" width="50" height="20" uuid="de94fe88-a32d-4e96-81e8-c7128abde2f3"/>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[I]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="470" y="17" width="50" height="20" uuid="79f4c0c5-f535-47a6-a2d4-dfba294a22f7"/>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[LL]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="520" y="17" width="50" height="20" uuid="93ddbfa0-f67e-4a0c-9e0b-373d621557b8"/>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[L]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="570" y="17" width="50" height="20" uuid="0a2fbc58-321d-4e75-9d00-ab934ba6531e"/>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[P]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="620" y="-3" width="100" height="20" uuid="64bfa00a-9364-4642-998b-38c28aa9c034"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -220,22 +157,22 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[UMUR]]></text>
 			</staticText>
+
+
+#set($i = 80)
+#foreach($field in $entity.nonKeyAttributes)
 			<staticText>
-				<reportElement x="620" y="17" width="50" height="20" uuid="f5b1d652-f213-47fd-a0bb-306f661d054c"/>
+				<reportElement x="${i}" y="17" width="50" height="20" uuid="8a86665a-a804-4189-8475-ecb0d2f1b1f8"/>
 				<box>
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[< 18]]></text>
+				<text><![CDATA[${field.name}]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="670" y="17" width="50" height="20" uuid="b1424e0c-c4be-4b03-9b54-a66244c7eb37"/>
-				<box>
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[≥ 18]]></text>
-			</staticText>
+#set($i = $i+50)
+#end
+
+
 		</band>
 	</columnHeader>
 	<detail>
@@ -335,7 +272,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[${dollar}F${startbrace}${field.name}${endbrace}]]></textFieldExpression>
 			</textField>
-#set($i = $i+110)
+#set($i = $i+50)
 #end
 
 
@@ -352,7 +289,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[${dollar}V${startbrace}${field.name}${endbrace}]]></textFieldExpression>
 			</textField>
-#set($i = $i+110)
+#set($i = $i+50)
 #end
 			<staticText>
 				<reportElement x="120" y="50" width="110" height="20" uuid="11f83e4d-3ac5-4e37-b796-9e38defb1d01"/>
