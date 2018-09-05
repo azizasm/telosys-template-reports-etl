@@ -68,10 +68,10 @@ public class ${entityClass}EtlService implements DataETL {
 			"TRX_PM_VISIT_ENCOUNTER e\n" +
 			"inner join  TRX_CD_COMPONENT co on e.visit_encounter_id=co.visit_encounter_id\n" +
 			"inner join TRX_CD_COMPONENT_ITEM ci on co.component_id=ci.component_id\n" +
-			"inner join TRX_CD_ENROLMENT el on ( ci.item_id =el.item_id and el.program_enrolment_type_id = 17 ) -- Enrolment type : Tobacco Cessation\n" +
+			"inner join TRX_CD_ENROLMENT el on ( ci.item_id =el.item_id and el.program_enrolment_type_id = 17 ) \n" +
 			"inner join TRX_PM_PATIENT_VISIT pv on e.visit_id = pv.visit_id\n" +
 			"inner join MST_PM_PATIENT p on p.patient_id =pv.patient_id\n" +
-			"--inner join trx_cd_episode_diagnosis  ed on ed.patient_visit_id =pv.visit_id\n" +
+			//"--inner join trx_cd_episode_diagnosis  ed on ed.patient_visit_id =pv.visit_id\n" +
 			"LEFT JOIN ref_co_ethnic_group et on p.ethnic_group_ethnic_group_id = et.ethnic_group_id\n" +
 			"INNER JOIN ref_co_gender g on p.gender_gender_id = g.gender_id\n" +
 			"inner join mst_am_facility f on (pv.clinic_id = f.facility_id)\n" +
@@ -86,7 +86,7 @@ public class ${entityClass}EtlService implements DataETL {
 			"ref_cd_health_education_session es\n" +
 			"inner join ref_cd_health_education_session_patient esp on (es.id = esp.session_id)\n" +
 			"inner join TRX_CD_COMPONENT_ITEM ci on (ci.item_id = es.item_id)\n" +
-			"where es.education_program_id = 2071 -- Kawalan Penyakit AIDS STD Dan Penyalah Gunaan Bahan\n" +
+			"where es.education_program_id = 2071 \n" +
 			"and es.activity = 'Nasihat Individu'\n" +
 			") ess on (p.patient_id = ess.patient_id)\n" +
 			"left outer join (\n" +
@@ -101,7 +101,7 @@ public class ${entityClass}EtlService implements DataETL {
 			"join mst_md_drug_prescription d on (d.drug_id = po.drug_id)\n" +
 			"where d.generic_drug_name like 'Varenicline%'\n" +
 			") dv on (p.patient_id  = dv.patient_id )\n" +
-			"where  co.type = 69 -- enrolment\n" +
+			"where  co.type = 69 \n" +
 			" and( pv.visit_id NOT IN\n" +
 			"        (select r.visit_Id from report.rpt_nontpchims_rpt_tpcnhph010c_src_registry r , TRX_PM_PATIENT_VISIT v where v.visit_id=r.visit_Id and\n" +
 			"          ((v.updated_At is not null AND v.updated_At = r.updated_At) or (v.updated_At is null AND v.created_At=r.updated_At))\n" +
@@ -119,7 +119,7 @@ public class ${entityClass}EtlService implements DataETL {
 			"f.facility_id, f.facility_name  , et.ethnic_group_name ,\n" +
 			"EXTRACT(YEAR from age(pv.created_at , p.date_of_birth) ) as age,\n" +
 			"g.gender_id, g.gender_name, el.status as enrolment_status,\n" +
-			"--ess.id ,ess.actual_date,\n" +
+		//	"--ess.id ,ess.actual_date,\n" +
 			"ess.status as education_session_status, ess.activity , ess.item_id, dn.nicotine_drug, dv.varenicline_drug, pv.created_at "
 	    + strBody 
 	    + " order by 1,2,3" );

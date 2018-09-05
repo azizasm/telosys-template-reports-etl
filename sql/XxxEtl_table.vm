@@ -26,6 +26,7 @@ SELECT setval('report.rpt_co_metadata_report_metadata_id_seq', (SELECT max(repor
 
 -- Delete report filter ${entityCaps} 
 DELETE FROM report.rpt_co_report_filter WHERE report_id = (SELECT report_metadata_id FROM report.rpt_co_metadata WHERE report_code = '${entityCaps}');
+DELETE  FROM report.rpt_co_metadata WHERE report_code = '${entityCaps}';
 
 INSERT INTO report.rpt_co_metadata( report_code, report_display_name, report_name, report_type, report_module, etl_class, url,armc_resource_id,is_enabled) VALUES ('${entityCaps}', '${entityCaps}', 'Report ${entityCaps}', 'STATIC', 'TPC', '', '','reports_tpc_${entityInstance}_rd',true);
 
