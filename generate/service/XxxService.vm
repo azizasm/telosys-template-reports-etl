@@ -44,12 +44,15 @@ public class ${entityClass}Service {
 	  List<${entityClass}Dto> dtoList = new ArrayList<${entityClass}Dto>();
 		List<Object[]> ${entityInstance}DtoLists = new ArrayList<Object[]>(0);
 		if(null != facilityId){
-		    ${entityInstance}DtoLists = ${entityInstance}Repository.findByYearAndMonthAndClinic( from, to , facilityId.longValue() );
+		    ${entityInstance}DtoLists = ${entityInstance}Repository.findByYear( from, to  //, facilityId.longValue() 
+			);
 		}
 		else if(null != districtId && null != stateId){
-		    ${entityInstance}DtoLists = ${entityInstance}Repository.findByYearAndMonthAndDistrict(from , to, districtId.longValue(), stateId.longValue());
+		    ${entityInstance}DtoLists = ${entityInstance}Repository.findByYear(from , to //, districtId.longValue(), stateId.longValue()
+			);
 		}else if(null != stateId && null== districtId){
-		    ${entityInstance}DtoLists = ${entityInstance}Repository.findByYearAndMonthAndState(from, to, stateId.longValue());
+		    ${entityInstance}DtoLists = ${entityInstance}Repository.findByYear(from, to //, stateId.longValue()
+			);
 		}
 		
 		if(null != ${entityInstance}DtoLists && !${entityInstance}DtoLists.isEmpty()){

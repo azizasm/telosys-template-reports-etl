@@ -1,7 +1,7 @@
 #parse("include/var_entity.vm")
 
 /**
-* Copyright © 2016 MIMOS Berhad. All Rights Reserved 
+* Copyright 2016 MIMOS Berhad. All Rights Reserved 
 *
 * All intellectual properties not limited to patents, trademarks, industrial designs,
 * copyrights, know-how including layout of images and contents contained herein 
@@ -10,7 +10,6 @@
 *   
 * Class name: my.mimos.tpcohcis.report.ohcis.pg101.etl.service.Pg101ETLService
 * Description: 
-* <TODO: What the class does>
 * 
 */
 
@@ -65,18 +64,49 @@ public class ${entityClass}EtlService implements DataETL {
 	StringBuilder strBody=new StringBuilder();
 
 	// TODO : need to change
-	strBody.append("  from trx_cd_episode_diagnosis  ed"   
-	    + " inner join trx_pm_patient_visit v on ed.patient_visit_id = v.visit_id"
-	    + " inner join mst_pm_patient p on ( v.patient_id = p.patient_id)"
-	    + " inner join mst_am_facility f on (v.clinic_id = f.facility_id)"
-	    + " left outer join mst_am_facility_address fa on f.facility_id = fa.facility_id"
-	    + " left outer join  ref_co_state sta on fa.state_id=sta.state_id"
-	    + " left outer join  ref_co_district dst on fa.district_id=dst.district_id"
-	    + " left outer join trx_pm_death_information di on p.patient_id = di.patient_id"
-	    + " WHERE 1=1"
-	    + " and ( ed.diagnosis_code like 'A0%' or di.immediate_course_of_death like 'A0%') "
-	    + " AND ed.episode_diagnosis_id not in (select r.episode_diagnosis_id from report.rpt_${groupName}_${entityInstance}_src_registry r , trx_cd_episode_diagnosis ci where ci.episode_diagnosis_id = r.episode_diagnosis_id "
-	    + " and ((ci.updated_at is not null AND ci.updated_at = r.updated_at) or (ci.updated_at is null AND ci.created_at = r.updated_at))) "
+	strBody.append(" from\n" +
+			"TRX_PM_VISIT_ENCOUNTER e\n" +
+			"inner join  TRX_CD_COMPONENT co on e.visit_encounter_id=co.visit_encounter_id\n" +
+			"inner join TRX_CD_COMPONENT_ITEM ci on co.component_id=ci.component_id\n" +
+			"inner join TRX_CD_ENROLMENT el on ( ci.item_id =el.item_id and el.program_enrolment_type_id = 17 ) -- Enrolment type : Tobacco Cessation\n" +
+			"inner join TRX_PM_PATIENT_VISIT pv on e.visit_id = pv.visit_id\n" +
+			"inner join MST_PM_PATIENT p on p.patient_id =pv.patient_id\n" +
+			"--inner join trx_cd_episode_diagnosis  ed on ed.patient_visit_id =pv.visit_id\n" +
+			"LEFT JOIN ref_co_ethnic_group et on p.ethnic_group_ethnic_group_id = et.ethnic_group_id\n" +
+			"INNER JOIN ref_co_gender g on p.gender_gender_id = g.gender_id\n" +
+			"inner join mst_am_facility f on (pv.clinic_id = f.facility_id)\n" +
+			"left outer join (select distinct faa.state_id , faa.district_id , faa.facility_id from mst_am_facility_address faa ) fa on f.facility_id = fa.facility_id\n" +
+			"left outer join  ref_co_state sta on fa.state_id=sta.state_id\n" +
+			"left outer join  ref_co_district dst on fa.district_id=dst.district_id\n" +
+			"left outer join trx_pm_death_information di on pv.patient_id = di.patient_id\n" +
+			"left outer join mst_pm_visit_referral vr on pv.referral_id=vr.referral_id\n" +
+			"left outer join (\n" +
+			"select es.id , es.actual_date, es.status, esp.patient_id , es.activity , es.item_id\n" +
+			" from\n" +
+			"ref_cd_health_education_session es\n" +
+			"inner join ref_cd_health_education_session_patient esp on (es.id = esp.session_id)\n" +
+			"inner join TRX_CD_COMPONENT_ITEM ci on (ci.item_id = es.item_id)\n" +
+			"where es.education_program_id = 2071 -- Kawalan Penyakit AIDS STD Dan Penyalah Gunaan Bahan\n" +
+			"and es.activity = 'Nasihat Individu'\n" +
+			") ess on (p.patient_id = ess.patient_id)\n" +
+			"left outer join (\n" +
+			"select ppo.patient_id, d.generic_drug_name as nicotine_drug  from mst_om_prescription_patient_order ppo\n" +
+			"join mst_om_prescription_order po on ppo.patient_order_id = po.patient_order_id\n" +
+			"join mst_md_drug_prescription d on (d.drug_id = po.drug_id)\n" +
+			"where d.generic_drug_name like 'Nicotine%'\n" +
+			") dn on (p.patient_id  = dn.patient_id )\n" +
+			"left outer join (\n" +
+			"select ppo.patient_id, d.generic_drug_name as varenicline_drug  from mst_om_prescription_patient_order ppo\n" +
+			"join mst_om_prescription_order po on ppo.patient_order_id = po.patient_order_id\n" +
+			"join mst_md_drug_prescription d on (d.drug_id = po.drug_id)\n" +
+			"where d.generic_drug_name like 'Varenicline%'\n" +
+			") dv on (p.patient_id  = dv.patient_id )\n" +
+			"where  co.type = 69 -- enrolment\n" +
+			" and( pv.visit_id NOT IN\n" +
+			"        (select r.visit_Id from report.rpt_nontpchims_rpt_tpcnhph010c_src_registry r , TRX_PM_PATIENT_VISIT v where v.visit_id=r.visit_Id and\n" +
+			"          ((v.updated_At is not null AND v.updated_At = r.updated_At) or (v.updated_At is null AND v.created_At=r.updated_At))\n" +
+			"         )\n" +
+			") "
 	    );
 	
 	StringBuilder strCount=new StringBuilder();
@@ -85,21 +115,12 @@ public class ${entityClass}EtlService implements DataETL {
 	StringBuilder strQuery=new StringBuilder();
 
 	// TODO : need to change
-	strQuery.append("SELECT"
-	    + " sta.state_name as state,"
-	    + " dst.district_name as district,"
-	    + " f.facility_name as unit,"
-	    + " sta.state_id,"
-	    + " dst.district_id,"
-	    + " p.patient_id,"
-	    + " ed.diagnosis_code,"
-	    + " ed.date_diagnosed,"
-	    + " ed.episode_diagnosis_id,"
-	    + " ed.created_at,"
-	    + " ed.updated_at,"
-	    + " p.date_of_birth,"
-	    + " di.death_date,"
-	    + " f.facility_id"
+	strQuery.append("select  pv.visit_id, p.patient_id, ci.component_id, sta.state_id,  sta.state_name, dst.district_id, dst.district_name,\n" +
+			"f.facility_id, f.facility_name  , et.ethnic_group_name ,\n" +
+			"EXTRACT(YEAR from age(pv.created_at , p.date_of_birth) ) as age,\n" +
+			"g.gender_id, g.gender_name, el.status as enrolment_status,\n" +
+			"--ess.id ,ess.actual_date,\n" +
+			"ess.status as education_session_status, ess.activity , ess.item_id, dn.nicotine_drug, dv.varenicline_drug, pv.created_at "
 	    + strBody 
 	    + " order by 1,2,3" );
 	
@@ -140,11 +161,12 @@ public class ${entityClass}EtlService implements DataETL {
 
 	*/
 	      	${entityInstance}Repository.save(${entityInstance}Ins);
-		    
-		${entityClass}SourceRegister ${entityInstance}SourceRegistr = ${entityInstance}SourceRegisterRepo.findOne(${entityInstance}Ins.getEpisodeDiagnosisId());
+		    //TODO : change 
+		${entityClass}SourceRegister ${entityInstance}SourceRegistr = ${entityInstance}SourceRegisterRepo.findOne(${entityInstance}Ins.getVisitId());
 		if(${entityInstance}SourceRegistr == null) {
 		  ${entityInstance}SourceRegistr = new ${entityClass}SourceRegister();
-		  ${entityInstance}SourceRegistr.setEpisodeDiagnosisId(${entityInstance}Ins.getEpisodeDiagnosisId());
+			//TODO : change 
+		  ${entityInstance}SourceRegistr.setVisitId(${entityInstance}Ins.getVisitId());
 		} 
 		if(updatedAt != null){
 		  ${entityInstance}SourceRegistr.setUpdatedAt(updatedAt );

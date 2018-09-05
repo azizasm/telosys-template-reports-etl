@@ -86,7 +86,6 @@ public class $entityClass extends AbstractReportEntity implements Serializable {
     //----------------------------------------------------------------------
     // GETTER & SETTER FOR THE KEY FIELD
     //----------------------------------------------------------------------
-##        // TODO : Change long to Long
 #foreach($field in $entity.keyAttributes)
 #if ($field.setter)    
 	public void ${field.setter}(Long $field.name) {

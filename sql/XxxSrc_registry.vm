@@ -1,6 +1,0 @@
-CREATE TABLE report.rpt_${groupName}_${entityInstance}_src_registry
-(
-  visit_id bigint NOT NULL,
-  updated_at timestamp without time zone,
-  CONSTRAINT rpt_${groupName}_${entityInstance}_src_registry_pkey PRIMARY KEY (visit_id)
-);

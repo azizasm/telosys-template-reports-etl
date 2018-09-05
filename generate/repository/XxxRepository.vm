@@ -1,5 +1,5 @@
 /**
-* Copyright � 2016 MIMOS Berhad. All Rights Reserved 
+* Copyright  2016 MIMOS Berhad. All Rights Reserved 
 *
 * All intellectual properties not limited to patents, trademarks, industrial designs,
 * copyrights, know-how including layout of images and contents contained herein 
@@ -8,7 +8,6 @@
 *   
 * Class name: my.mimos.tpcohcis.report.dental.pg101.repository.PG101Repository
 * Description: 
-* <TODO: What the class does>
 * 
 */
 
@@ -18,6 +17,7 @@ package my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.reposit
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Date;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,50 +26,46 @@ import org.springframework.data.repository.query.Param;
 import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.model.${entityClass};
 
 public interface ${entityClass}Repository extends JpaRepository<${entityClass}, Long> {
+ //TODO : change
+@Query(value =
+			"select r.state_name,\n" +
+					" sum ( 1) as jum_kes,\n" +
+					" sum ( case when r.ethnic_group_name = 'Melayu' then 1 end ) as bangsa_m,\n" +
+					" sum ( case when r.ethnic_group_name = 'Cina' then 1 end ) as bangsa_c,\n" +
+					" sum ( case when r.ethnic_group_name = 'India' then 1 end ) as bangsa_i,\n" +
+					" sum ( case when r.ethnic_group_name <> 'Melayu' and  r.ethnic_group_name <> 'Cina'\n" +
+					"        and r.ethnic_group_name <> 'India'  then 1 end ) as bangsa_ll,\n" +
+					" sum ( case when r.gender_id = 1 then 1 end ) as jantina_l,\n" +
+					" sum ( case when r.gender_id = 2 then 1 end ) as jantina_p,\n" +
+					" sum ( case when r.age < 18 then 1 end ) as umur_b18,\n" +
+					" sum ( case when r.age >= 18 then 1 end ) as umur_a18,\n" +
+					" sum( case when r.raw_status = 'RKSB' then 1 end) as raw_kaw_b,\n" +
+					" sum( case when r.raw_status = 'RKSTB' then 1 end) as raw_kaw_tb,\n" +
+					" sum( case when r.raw_status = 'RNKB' then 1 end) as raw_n_kaw_b,\n" +
+					" sum( case when r.raw_status = 'RNKTB' then 1 end) as raw_n_kaw_tb,\n" +
+					" sum( case when r.raw_status = 'RVKB' then 1 end) as raw_v_kaw_b,\n" +
+					" sum( case when r.raw_status = 'RVKTB' then 1 end) as raw_v_kaw_tb,\n" +
+					"\n" +
+					" sum ( case when (r.raw_status = 'RKSB' OR  r.raw_status = 'RNKB' OR r.raw_status = 'RVKB' ) then 1 end ) as klien_berjaya,\n" +
+					" sum ( case when (r.raw_status = 'DROPOUT' ) then 1 end ) as klien_cicir,\n" +
+					" sum ( case when (r.raw_status = 'RKSB' OR  r.raw_status = 'RNKB' OR r.raw_status = 'RVKB' ) then 1 end ) / sum ( 1) as kadar_berjaya\n" +
+					" from (\n" +
+					"  select rs.*,\n" +
+					" case\n" +
+					"   when rs.item_id is not null and rs.nicotine_drug is null and rs.varenicline_drug is null and rs.enrolment_status = 'Completed' then 'RKSB'\n" +
+					"   when rs.item_id is not null and rs.nicotine_drug is null and rs.varenicline_drug is null and rs.enrolment_status = 'Active'then 'RKSTB'\n" +
+					"   when rs.item_id is not null and rs.nicotine_drug is not null  and rs.enrolment_status = 'Completed' then 'RNKB'\n" +
+					"   when rs.item_id is not null and rs.nicotine_drug is not null  and rs.enrolment_status = 'Active'then 'RNKTB'\n" +
+					"   when rs.item_id is not null  and rs.varenicline_drug is not null and rs.enrolment_status = 'Completed' then 'RVKB'\n" +
+					"   when rs.item_id is not null  and rs.varenicline_drug is not  null and rs.enrolment_status = 'Active'then 'RVKTB'\n" +
+					"   when rs.item_id is not null and  rs.enrolment_status <> 'Completed' and rs.enrolment_status <> 'Active' then 'DROPOUT'\n" +
+					"END\n" +
+					" as raw_status from report.rpt_${groupName}_${entityInstance} rs\n" +
+					" where rs.created_at between ?1 and ?2" +
+					") r\n" +
+					"  group by  r.state_name"	, nativeQuery = true)
+	List<Object[]> findByYear( Timestamp from, Timestamp to);
 
-	@Query(value="with patient_det as (select distinct a.patient_id, a.state_name, a.district_name, a.facility_name,"
-		+ " (case when length(a.diagnose_code)>0 then 1 else 0 end ) as k1,"
-		+ " age_0,age_1,age_2,age_3,age_4,age_5,age_6,age_7,age_8,age_9,age_10,age_11"
-		+ " from report.rpt_${groupName}_${entityInstance} a"
-		+ " where a.diagnose_date between ?1 and ?2"
-		+ " and a.facility_id = ?3 )"
-		+ " select state_name, district_name, facility_name, sum( k1 ) as k1,"
-		+ " sum(age_0) as k2, sum(age_1) as k3, sum(age_2) as k4,"
-		+ " sum(age_3) as k5, sum(age_4) as k6, sum(age_5) as k7,"
-		+ " sum(age_6) as k8, sum(age_7) as k9, sum(age_8) as k10,"
-		+ " sum(age_9) as k11, sum(age_10) as k12, sum(age_11) as k13 from patient_det"
-		+ " group by facility_name, district_name,state_name", nativeQuery=true)
-	List<Object[]> findByYearAndMonthAndClinic(Timestamp from, Timestamp to, Long facilityId);
-
-	@Query(value="with patient_det as (select distinct a.patient_id, a.state_name, a.district_name, a.facility_name,"
-		+ " (case when length(a.diagnose_code)>0 then 1 else 0 end ) as k1,"
-		+ " age_0,age_1,age_2,age_3,age_4,age_5,age_6,age_7,age_8,age_9,age_10,age_11"
-		+ " from report.rpt_${groupName}_${entityInstance} a"
-		+ " where a.diagnose_date between ?1 and ?2"
-		+ " and a.district_id= ?3 "
-	    + " and a.state_id= ?4 "
-		+ " )"
-		+ " select state_name, district_name, facility_name, sum( k1 ) as k1,"
-		+ " sum(age_0) as k2, sum(age_1) as k3, sum(age_2) as k4,"
-		+ " sum(age_3) as k5, sum(age_4) as k6, sum(age_5) as k7,"
-		+ " sum(age_6) as k8, sum(age_7) as k9, sum(age_8) as k10,"
-		+ " sum(age_9) as k11, sum(age_10) as k12, sum(age_11) as k13 from patient_det"
-		+ " group by facility_name, district_name,state_name", nativeQuery=true)
-	List<Object[]> findByYearAndMonthAndDistrict(Timestamp from, Timestamp to,Long district ,Long state);
-
-	@Query(value="with patient_det as (select distinct a.patient_id, a.state_name, a.district_name, a.facility_name,"
-		+ " (case when length(a.diagnose_code)>0 then 1 else 0 end ) as k1,"
-		+ " age_0,age_1,age_2,age_3,age_4,age_5,age_6,age_7,age_8,age_9,age_10,age_11"
-		+ " from report.rpt_${groupName}_${entityInstance} a"
-		+ " where a.diagnose_date between ?1 and ?2"
-	    + " and a.state_id= ?3 "
-		+ " )"
-		+ " select state_name, district_name, facility_name, sum( k1 ) as k1,"
-		+ " sum(age_0) as k2, sum(age_1) as k3, sum(age_2) as k4,"
-		+ " sum(age_3) as k5, sum(age_4) as k6, sum(age_5) as k7,"
-		+ " sum(age_6) as k8, sum(age_7) as k9, sum(age_8) as k10,"
-		+ " sum(age_9) as k11, sum(age_10) as k12, sum(age_11) as k13 from patient_det"
-		+ " group by facility_name, district_name,state_name", nativeQuery=true)
-	List<Object[]> findByYearAndMonthAndState(@Param("from") Timestamp from, @Param("to") Timestamp to ,@Param("state") Long state);
+   
 
 }
