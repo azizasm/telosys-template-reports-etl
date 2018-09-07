@@ -35,6 +35,8 @@ import my.mimos.tpcohcis.report.shared.model.AbstractReportEntity;
 @Table(name = "rpt_${groupName}_${entityInstance}", schema = "report")
 public class $entityClass extends AbstractReportEntity implements Serializable {
 
+#set( $regex = "([a-z])([A-Z]+)")
+#set( $replacement = "$1_$2")
 
 #if($compositeKey)
     //----------------------------------------------------------------------
@@ -48,15 +50,17 @@ public class $entityClass extends AbstractReportEntity implements Serializable {
     //----------------------------------------------------------------------
 #foreach($field in $entity.keyAttributes)
 ##$jpa.fieldAnnotations(4, $field)
-##    private $field.type $field.name #if($field.hasInitialValue())= ${field.initialValue} #end; #if($field.isFK())// Foreign Key #end 
-	@Id
-	@Column(name = "ID")
-	private Long id;
+#set( $toDash = $field.name.replaceAll($regex, $replacement).toUpperCase())
+    @Id
+    @Column(name = "${toDash}") 
+    private Long $field.name #if($field.hasInitialValue())= ${field.initialValue} #end; #if($field.isFK())// Foreign Key #end 
+##	@Id
+##	@Column(name = "ID")
+##	private Long id;
 #end
 #end
 
-#set( $regex = "([a-z])([A-Z]+)")
-#set( $replacement = "$1_$2")
+
 
 
     //----------------------------------------------------------------------

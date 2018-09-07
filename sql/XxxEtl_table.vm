@@ -5,20 +5,29 @@
 DROP TABLE IF EXISTS report.rpt_${groupName}_${entityInstance}_src_registry;
 CREATE TABLE report.rpt_${groupName}_${entityInstance}_src_registry
 (
-  visit_id bigint NOT NULL,
+#foreach($field in $entity.keyAttributes ) 
+  #set( $toDash = $field.name.replaceAll($regex, $replacement).toUpperCase())
+   ${toDash}#if ($field.type == "String") character varying(255) #elseif($field.type == "long" || $field.type == "Long") bigint #elseif( $field.type == "int" || $field.type == "Integer") integer #elseif( $field.type == "date" || $field.type == "Date") timestamp without time zone #end,
+#end
   updated_at timestamp without time zone,
-  CONSTRAINT rpt_${groupName}_${entityInstance}_src_registry_pkey PRIMARY KEY (visit_id)
+ #foreach($field in $entity.keyAttributes ) 
+  #set( $toDash = $field.name.replaceAll($regex, $replacement).toUpperCase())
+    CONSTRAINT rpt_${groupName}_${entityInstance}_src_registry_pkey PRIMARY KEY (${toDash})
+#end
 );
 
 DROP TABLE IF EXISTS report.rpt_${groupName}_${entityInstance};
 CREATE TABLE report.rpt_${groupName}_${entityInstance}
 (
-  ID bigint NOT NULL,
-#foreach($field in $entity.nonKeyAttributes)
+#foreach($field in $entity.attributes )
 #set( $toDash = $field.name.replaceAll($regex, $replacement).toUpperCase())
    ${toDash}#if ($field.type == "String") character varying(255) #elseif($field.type == "long" || $field.type == "Long") bigint #elseif( $field.type == "int" || $field.type == "Integer") integer #elseif( $field.type == "date" || $field.type == "Date") timestamp without time zone #end,
 #end
-   CONSTRAINT rpt_${groupName}_${entityInstance}_pkey PRIMARY KEY (ID)
+ snapshot timestamp without time zone,
+#foreach($field in $entity.keyAttributes ) 
+  #set( $toDash = $field.name.replaceAll($regex, $replacement).toUpperCase())
+    CONSTRAINT rpt_${groupName}_${entityInstance}_pkey PRIMARY KEY (${toDash})
+#end
 );
 
 -- correct sequence

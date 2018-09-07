@@ -103,7 +103,7 @@ public class ${entityClass}EtlService implements DataETL {
 			") dv on (p.patient_id  = dv.patient_id )\n" +
 			"where  co.type = 69 \n" +
 			" and( pv.visit_id NOT IN\n" +
-			"        (select r.visit_Id from report.rpt_nontpchims_rpt_tpcnhph010c_src_registry r , TRX_PM_PATIENT_VISIT v where v.visit_id=r.visit_Id and\n" +
+			"        (select r.visit_Id from report.rpt_nontpchims_nhph012_src_registry r , TRX_PM_PATIENT_VISIT v where v.visit_id=r.visit_Id and\n" +
 			"          ((v.updated_At is not null AND v.updated_At = r.updated_At) or (v.updated_At is null AND v.created_At=r.updated_At))\n" +
 			"         )\n" +
 			") "
@@ -148,11 +148,24 @@ public class ${entityClass}EtlService implements DataETL {
 	  for (Object[] obj : listResult) {
 	      	${entityClass} ${entityInstance}Ins= new ${entityClass}();
 
-#foreach($field in $entity.nonKeyAttributes)
+## get the key field name
+#foreach($field in $entity.keyAttributes)
 #if ($field.setter)    
-	${entityInstance}Ins.${field.setter}(get${field.type}(obj[$foreach.index]));
+ #set( $keyFieldSetter = $field.setter)
 #end
-#end 			
+#end
+
+#foreach($field in $entity.attributes)
+#if ($field.setter)  
+    ## check if key field then getLong
+    #if ($keyFieldSetter ==  $field.setter ) 
+	       ${entityInstance}Ins.${field.setter}(getLong(obj[$foreach.index]));
+		#else
+		     ${entityInstance}Ins.${field.setter}(get${field.type}(obj[$foreach.index]));
+    #end
+#end
+#end
+		
 /*		
 
 	createdAt= getTimestamp(obj[9]);
