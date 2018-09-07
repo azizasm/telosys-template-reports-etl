@@ -25,7 +25,7 @@
 
 #set($fwidth = 50)
 
-#set($fMaxPos = 1020)
+#set($fMaxPos = 1100)
 #set($fStartPos = 80)
 #set($totalField = 0)
 

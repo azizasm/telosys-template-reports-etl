@@ -10,6 +10,8 @@ CREATE TABLE report.rpt_${groupName}_${entityInstance}_src_registry
    ${toDash}#if ($field.type == "String") character varying(255) #elseif($field.type == "long" || $field.type == "Long") bigint #elseif( $field.type == "int" || $field.type == "Integer") integer #elseif( $field.type == "date" || $field.type == "Date") timestamp without time zone #end,
 #end
   updated_at timestamp without time zone,
+  -- default field snapshot
+  snapshot timestamp without time zone,
  #foreach($field in $entity.keyAttributes ) 
   #set( $toDash = $field.name.replaceAll($regex, $replacement).toUpperCase())
     CONSTRAINT rpt_${groupName}_${entityInstance}_src_registry_pkey PRIMARY KEY (${toDash})
@@ -23,7 +25,8 @@ CREATE TABLE report.rpt_${groupName}_${entityInstance}
 #set( $toDash = $field.name.replaceAll($regex, $replacement).toUpperCase())
    ${toDash}#if ($field.type == "String") character varying(255) #elseif($field.type == "long" || $field.type == "Long") bigint #elseif( $field.type == "int" || $field.type == "Integer") integer #elseif( $field.type == "date" || $field.type == "Date") timestamp without time zone #end,
 #end
- snapshot timestamp without time zone,
+  -- default field snapshot
+   snapshot timestamp without time zone,
 #foreach($field in $entity.keyAttributes ) 
   #set( $toDash = $field.name.replaceAll($regex, $replacement).toUpperCase())
     CONSTRAINT rpt_${groupName}_${entityInstance}_pkey PRIMARY KEY (${toDash})
