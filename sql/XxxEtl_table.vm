@@ -16,7 +16,7 @@ CREATE TABLE report.rpt_${groupName}_${entityInstance}_src_registry
   #set( $toDash = $field.name.replaceAll($regex, $replacement).toUpperCase())
     CONSTRAINT rpt_${groupName}_${entityInstance}_src_registry_pkey PRIMARY KEY (${toDash})
 #end
-);
+);  
 
 DROP TABLE IF EXISTS report.rpt_${groupName}_${entityInstance};
 CREATE TABLE report.rpt_${groupName}_${entityInstance}
@@ -45,6 +45,6 @@ INSERT INTO report.rpt_co_metadata( report_code, report_display_name, report_nam
 -- Insert  report filter ${entityCaps} 
 INSERT INTO report.rpt_co_report_filter(report_id, filter_id) VALUES ((SELECT report_metadata_id FROM report.rpt_co_metadata WHERE report_code = '${entityCaps}'), 1);
 INSERT INTO report.rpt_co_report_filter(report_id, filter_id) VALUES ((SELECT report_metadata_id FROM report.rpt_co_metadata WHERE report_code = '${entityCaps}'), 2);
-INSERT INTO report.rpt_co_report_filter(report_id, filter_id) VALUES ((SELECT report_metadata_id FROM report.rpt_co_metadata WHERE report_code = '${entityCaps}'), 6);
-INSERT INTO report.rpt_co_report_filter(report_id, filter_id) VALUES ((SELECT report_metadata_id FROM report.rpt_co_metadata WHERE report_code = '${entityCaps}'), 5);
-INSERT INTO report.rpt_co_report_filter(report_id, filter_id) VALUES ((SELECT report_metadata_id FROM report.rpt_co_metadata WHERE report_code = '${entityCaps}'), 4);
+INSERT INTO report.rpt_co_report_filter(report_id, filter_id) VALUES ((SELECT report_metadata_id FROM report.rpt_co_metadata WHERE report_code = '${entityCaps}'), 19);
+INSERT INTO report.rpt_co_report_filter(report_id, filter_id) VALUES ((SELECT report_metadata_id FROM report.rpt_co_metadata WHERE report_code = '${entityCaps}'), 18);
+
