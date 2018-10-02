@@ -195,7 +195,7 @@ public class ${entityClass}EtlService implements DataETL {
     }
         
     private String getString(Object object) {
-	String result = "";
+	String result = null;
 	if (null != object && object.getClass().getClass().isInstance(String.class)) {
 	    result = object.toString();
 	}
@@ -213,7 +213,7 @@ public class ${entityClass}EtlService implements DataETL {
   }
 
   private Long getLong(Object object) {
-	Long result = 0L;
+	Long result = null;
 	if (null != object && object instanceof BigDecimal) {
 	    result = ((Number) object).longValue();
 	} else if (null != object && object instanceof BigInteger) {
