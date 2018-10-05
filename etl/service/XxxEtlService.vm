@@ -194,62 +194,56 @@ public class ${entityClass}EtlService implements DataETL {
 
     }
         
-    private String getString(Object object) {
-	String result = null;
-	if (null != object && object.getClass().getClass().isInstance(String.class)) {
-	    result = object.toString();
+ 	private Date getDate(Object object) {
+		Date result = null;
+		if (null != object && object instanceof LocalDate) {
+			result = (Date) object;
+		} else if (null != object && object instanceof Timestamp) {
+			Timestamp t1= (Timestamp) object;
+			result = new Date(t1.getTime());
+		} else if (null != object && object instanceof Date) {
+			result = (Date) object;
+		}
+		return result;
 	}
-	return result;
-  }
 
-  private Date getDate(Object object) {
-	Date result = null;
-	if (null != object && object instanceof LocalDate) {
-	    result = (Date) object;
-	} else if (null != object && object instanceof Date) {
-	    result = (Date) object;
+	private Long getLong(Object object) {
+		Long result = 0L;
+		if (null != object && object instanceof BigDecimal) {
+			result = ((Number) object).longValue();
+		} else if (null != object && object instanceof BigInteger) {
+			BigInteger resulti = (BigInteger) object;
+			result = resulti.longValue();
+		} else if (null != object && object instanceof Double) {
+			Double resultD = (Double) object;
+			result = resultD.longValue();
+		} else if (null != object && object instanceof Integer) {
+			Integer resulti = (Integer) object;
+			result = resulti.longValue();
+		}
+		return result;
 	}
-	return result;
-  }
 
-  private Long getLong(Object object) {
-	Long result = null;
-	if (null != object && object instanceof BigDecimal) {
-	    result = ((Number) object).longValue();
-	} else if (null != object && object instanceof BigInteger) {
-	    BigInteger resulti = (BigInteger) object;
-	    result = resulti.longValue();
-	} else if (null != object && object instanceof Integer) {
-	    Integer resulti = (Integer) object;
-	    result = resulti.longValue();
-	}
-	return result;
-  }
-  
-  private Timestamp getTimestamp(Object object) {
-	Date result = null;
-	if (null != object && object instanceof LocalDate) {
-	   result = (Date) object;
-	} else if (null != object && object instanceof Date) {
-	    result = (Date) object;
-	}
-	Timestamp ts= null;
-	if(null != result){
-	    ts = new Timestamp(result.getTime());
-	}
-	return ts;
-  }   
-    private Integer getMonth(Date date){
-	Calendar cal = Calendar.getInstance();
-	cal.setTime(date);
-	return cal.get(Calendar.MONTH);
-  }
 
-  private Integer getYear(Date date){
-	Calendar cal = Calendar.getInstance();
-	cal.setTime(date);
-	return cal.get(Calendar.YEAR);
-  }
+	private Double getDouble(Object object) {
+		Double result = null;
+		if (null != object && object instanceof BigDecimal) {
+			result = ((Double) object).doubleValue();
+		} else if (null != object && object instanceof Double) {
+			result = ((Double) object).doubleValue();
+		} else if (null != object && object instanceof String) {
+			result = Double.valueOf((String) object);
+		}
+		return result;
+	}
+
+	private String getString(Object object) {
+		String result = null;
+		if (null != object && object instanceof String) {
+			result = (String) object;
+		}
+		return result;
+	}
 
   @Override
   public String getReportCode() {
