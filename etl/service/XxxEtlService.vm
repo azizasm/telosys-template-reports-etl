@@ -208,7 +208,7 @@ public class ${entityClass}EtlService implements DataETL {
 	}
 
 	private Long getLong(Object object) {
-		Long result = 0L;
+		Long result = null;
 		if (null != object && object instanceof BigDecimal) {
 			result = ((Number) object).longValue();
 		} else if (null != object && object instanceof BigInteger) {
