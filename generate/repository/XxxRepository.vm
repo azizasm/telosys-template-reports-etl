@@ -13,6 +13,9 @@
 
 ## Include
 #parse("include/var_entity.vm")
+#set( $regex = "([a-z])([A-Z]+)")
+#set( $replacement = "$1_$2")
+
 package my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.repository;
 
 import java.sql.Timestamp;
@@ -26,46 +29,19 @@ import org.springframework.data.repository.query.Param;
 import my.mimos.tpcohcis.report.${groupName}.${entityInstance}.generate.model.${entityClass};
 
 public interface ${entityClass}Repository extends JpaRepository<${entityClass}, Long> {
- //TODO : change
+
+
+   //TODO : change
 @Query(value =
-			"select r.state_name,\n" +
-					" sum ( 1) as jum_kes,\n" +
-					" sum ( case when r.ethnic_group_name = 'Melayu' then 1 end ) as bangsa_m,\n" +
-					" sum ( case when r.ethnic_group_name = 'Cina' then 1 end ) as bangsa_c,\n" +
-					" sum ( case when r.ethnic_group_name = 'India' then 1 end ) as bangsa_i,\n" +
-					" sum ( case when r.ethnic_group_name <> 'Melayu' and  r.ethnic_group_name <> 'Cina'\n" +
-					"        and r.ethnic_group_name <> 'India'  then 1 end ) as bangsa_ll,\n" +
-					" sum ( case when r.gender_id = 1 then 1 end ) as jantina_l,\n" +
-					" sum ( case when r.gender_id = 2 then 1 end ) as jantina_p,\n" +
-					" sum ( case when r.age < 18 then 1 end ) as umur_b18,\n" +
-					" sum ( case when r.age >= 18 then 1 end ) as umur_a18,\n" +
-					" sum( case when r.raw_status = 'RKSB' then 1 end) as raw_kaw_b,\n" +
-					" sum( case when r.raw_status = 'RKSTB' then 1 end) as raw_kaw_tb,\n" +
-					" sum( case when r.raw_status = 'RNKB' then 1 end) as raw_n_kaw_b,\n" +
-					" sum( case when r.raw_status = 'RNKTB' then 1 end) as raw_n_kaw_tb,\n" +
-					" sum( case when r.raw_status = 'RVKB' then 1 end) as raw_v_kaw_b,\n" +
-					" sum( case when r.raw_status = 'RVKTB' then 1 end) as raw_v_kaw_tb,\n" +
-					"\n" +
-					" sum ( case when (r.raw_status = 'RKSB' OR  r.raw_status = 'RNKB' OR r.raw_status = 'RVKB' ) then 1 end ) as klien_berjaya,\n" +
-					" sum ( case when (r.raw_status = 'DROPOUT' ) then 1 end ) as klien_cicir,\n" +
-					" sum ( case when (r.raw_status = 'RKSB' OR  r.raw_status = 'RNKB' OR r.raw_status = 'RVKB' ) then 1 end ) / sum ( 1) as kadar_berjaya\n" +
-					" from (\n" +
-					"  select rs.*,\n" +
-					" case\n" +
-					"   when rs.item_id is not null and rs.nicotine_drug is null and rs.varenicline_drug is null and rs.enrolment_status = 'Completed' then 'RKSB'\n" +
-					"   when rs.item_id is not null and rs.nicotine_drug is null and rs.varenicline_drug is null and rs.enrolment_status = 'Active'then 'RKSTB'\n" +
-					"   when rs.item_id is not null and rs.nicotine_drug is not null  and rs.enrolment_status = 'Completed' then 'RNKB'\n" +
-					"   when rs.item_id is not null and rs.nicotine_drug is not null  and rs.enrolment_status = 'Active'then 'RNKTB'\n" +
-					"   when rs.item_id is not null  and rs.varenicline_drug is not null and rs.enrolment_status = 'Completed' then 'RVKB'\n" +
-					"   when rs.item_id is not null  and rs.varenicline_drug is not  null and rs.enrolment_status = 'Active'then 'RVKTB'\n" +
-					"   when rs.item_id is not null and  rs.enrolment_status <> 'Completed' and rs.enrolment_status <> 'Active' then 'DROPOUT'\n" +
-					"END\n" +
-					" as raw_status from report.rpt_${groupName}_${entityInstance} rs\n" +
-					" where rs.created_at between ?1 and ?2" +
-					") r\n" +
-					"  group by  r.state_name"	, nativeQuery = true)
+			"SELECT\n" +
+					#foreach($field in $entity.attributes )
+					#set( $toDash = $field.name.replaceAll($regex, $replacement).toLowerCase())
+					"    #if ($field.type == "String") 'NA' #elseif($field.type == "long" || $field.type == "Long") 0 #elseif( $field.type == "int" || $field.type == "Integer") 0 #elseif( $field.type == "date" || $field.type == "Date") current_date #end as ${toDash} #if( $foreach.hasNext ), #end \n" +
+					#end
+					"  FROM report.rpt_${groupName}_${entityInstance} rs\n" +
+					"   where rs.created_at between ?1 and ?2 "	, nativeQuery = true)
 	List<Object[]> findByYear( Timestamp from, Timestamp to);
 
-   
+
 
 }
