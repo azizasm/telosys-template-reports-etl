@@ -103,26 +103,18 @@ public class ${entityClass}EtlService implements DataETL {
 			") dv on (p.patient_id  = dv.patient_id )\n" +
 			"where  co.type = 69 \n" +
 			" and( pv.visit_id NOT IN\n" +
-			"        (select r.visit_Id from report.rpt_nontpchims_nhph012_src_registry r , TRX_PM_PATIENT_VISIT v where v.visit_id=r.visit_Id and\n" +
+			"        (select r.visit_Id from report.rpt_${groupName}_${entityInstance}_src_registry r , TRX_PM_PATIENT_VISIT v where v.visit_id=r.visit_Id and\n" +
 			"          ((v.updated_At is not null AND v.updated_At = r.updated_At) or (v.updated_At is null AND v.created_At=r.updated_At))\n" +
 			"         )\n" +
 			") "
 	    );
 	
-	StringBuilder strCount=new StringBuilder();
-	strCount.append("select count(*) " + strBody);
+		StringBuilder strCount=new StringBuilder();
+	strCount.append("select count(*) from ( " + strBody + " )sum");
 	
 	StringBuilder strQuery=new StringBuilder();
 
-	// TODO : need to change
-	strQuery.append("select  pv.visit_id, p.patient_id, ci.component_id, sta.state_id,  sta.state_name, dst.district_id, dst.district_name,\n" +
-			"f.facility_id, f.facility_name  , et.ethnic_group_name ,\n" +
-			"EXTRACT(YEAR from age(pv.created_at , p.date_of_birth) ) as age,\n" +
-			"g.gender_id, g.gender_name, el.status as enrolment_status,\n" +
-		//	"--ess.id ,ess.actual_date,\n" +
-			"ess.status as education_session_status, ess.activity , ess.item_id, dn.nicotine_drug, dv.varenicline_drug, pv.created_at "
-	    + strBody 
-	    + " order by 1,2,3" );
+	strQuery.append( strBody  );
 	
 
 	LOGGER.info("strCount is "+ strCount.toString());
