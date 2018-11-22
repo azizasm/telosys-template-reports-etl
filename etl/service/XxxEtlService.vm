@@ -64,7 +64,7 @@ public class ${entityClass}EtlService implements DataETL {
 	StringBuilder strBody=new StringBuilder();
 
 	// TODO : need to change
-	strBody.append(" from\n" +
+	strBody.append(" select * from\n" +
 			"TRX_PM_VISIT_ENCOUNTER e\n" +
 			"inner join  TRX_CD_COMPONENT co on e.visit_encounter_id=co.visit_encounter_id\n" +
 			"inner join TRX_CD_COMPONENT_ITEM ci on co.component_id=ci.component_id\n" +
